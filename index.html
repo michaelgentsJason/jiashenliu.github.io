@@ -8,95 +8,82 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- 顶部导航：桌面端横向，移动端折叠 -->
-  <header class="site-header" id="top">
-    <div class="container nav-wrap">
-      <a class="brand" href="#top">Jiashen Liu · Academic Page</a>
+  <!-- 移动端导航按钮 -->
+  <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="打开导航" aria-controls="sidebar" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-      <button class="menu-toggle" aria-label="切换导航菜单" aria-expanded="false" aria-controls="site-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <div class="page-layout">
+    <!-- 左侧固定栏：个人信息 + 导航 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-inner">
+        <img src="assets/avatar.jpg" alt="Jiashen Liu 头像" class="sidebar-avatar" />
+        <h1 class="sidebar-name">Jiashen Liu</h1>
+        <p class="sidebar-role">AI Researcher</p>
+        <p class="sidebar-meta">University of Warwick, Coventry</p>
 
-      <nav id="site-nav" class="site-nav" aria-label="主导航">
-        <a href="#about">关于</a>
-        <a href="#publications">论文</a>
-        <a href="#research">成果展示</a>
-        <a href="#admissions">招生信息</a>
-        <a href="#awards">获奖</a>
-        <a href="#teaching">教学</a>
-        <a href="#service">学术服务</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- Hero 区域：头像 + 姓名 + 研究定位 -->
-    <section class="hero section">
-      <div class="container hero-grid">
-        <img src="assets/avatar.jpg" alt="Jiashen Liu 头像" class="avatar" />
-
-        <div class="hero-content">
-          <p class="eyebrow">University of Warwick · Cyber Security Engineering (MSc with Distinction)</p>
-          <h1>Jiashen Liu / 刘佳燊</h1>
-          <p class="title">AI Researcher · Multimodal Reasoning · Retrieval-Augmented Systems</p>
-          <p class="lead">
-            我的研究聚焦于多模态 AI 系统在知识密集场景中的推理能力，重点关注视觉-语言-结构化知识融合、复杂任务的多步决策、
-            以及网络安全自动化、灾害响应、文档理解等高价值应用落地。
-          </p>
-
-          <div class="hero-links">
-            <a href="mailto:Jiashen.Liu@warwick.ac.uk">Email</a>
-            <a href="assets/CV_Jiashen.pdf" target="_blank" rel="noopener noreferrer">下载 CV</a>
-            <a href="#publications">Selected Publications</a>
-          </div>
-
-          <ul class="quick-facts">
-            <li><strong>邮箱：</strong>Jiashen.Liu@warwick.ac.uk</li>
-            <li><strong>地点：</strong>Coventry, UK</li>
-            <li><strong>语言：</strong>中文（普通话/粤语）、English</li>
-          </ul>
+        <div class="sidebar-actions">
+          <a href="mailto:Jiashen.Liu@warwick.ac.uk">Email</a>
+          <a href="assets/CV_Jiashen.pdf" target="_blank" rel="noopener noreferrer">CV</a>
         </div>
+
+        <nav class="sidebar-nav" id="site-nav" aria-label="主导航">
+          <a href="#about">关于</a>
+          <a href="#publications">论文</a>
+          <a href="#research">成果展示</a>
+          <a href="#admissions">招生信息</a>
+          <a href="#awards">获奖</a>
+          <a href="#teaching">教学</a>
+          <a href="#service">学术服务</a>
+        </nav>
+
+        <!-- 主题切换：浅色 / 深色 -->
+        <button class="theme-toggle" id="themeToggle" aria-label="切换浅色或深色模式">切换深色</button>
       </div>
-    </section>
+    </aside>
 
-    <!-- 关于 -->
-    <section id="about" class="section">
-      <div class="container">
+    <!-- 右侧主内容 -->
+    <main class="content" id="top">
+      <section id="about" class="section section-hero">
+        <p class="eyebrow">Cyber Security Engineering (MSc with Distinction)</p>
         <h2>关于</h2>
-        <div class="two-col">
-          <div>
-            <p>
-              我本科毕业于南京农业大学信息管理与信息系统专业，毕业论文
-              <em>DIAKG-GPT: Research on Intelligent Medical Q&A System Based on Data Augmentation</em>
-              获校级优秀毕业论文奖。硕士阶段在 University of Warwick 攻读网络安全工程，研究方向为多模态检索增强推理与智能体系统。
-            </p>
-            <p>
-              目前关注如何让大模型在真实高风险任务中进行可验证、可持续的结构化推理，并通过评测基准与工程系统验证其鲁棒性。
-            </p>
-          </div>
+        <p class="lead">
+          我的研究聚焦于多模态 AI 系统在知识密集场景中的推理能力，重点关注视觉-语言-结构化知识融合、复杂任务的多步决策，
+          以及网络安全自动化、文档理解等高价值应用落地。
+        </p>
 
-          <div>
+        <div class="about-grid">
+          <article class="panel">
+            <h3>简介</h3>
+            <p>
+              本科毕业于南京农业大学信息管理与信息系统专业，毕业论文
+              <em>DIAKG-GPT</em> 获优秀毕业论文奖；硕士阶段在 University of Warwick 攻读网络安全工程。
+            </p>
+            <p>
+              目前持续探索检索增强推理、工具调用智能体与评测体系，强调方法可验证性与工程可落地性。
+            </p>
+          </article>
+
+          <article class="panel">
             <h3>研究方向</h3>
             <div class="tag-list">
               <span class="tag">多模态 AI</span>
-              <span class="tag">检索增强生成（RAG）</span>
-              <span class="tag">智能体与工具调用</span>
+              <span class="tag">RAG</span>
+              <span class="tag">智能体系统</span>
               <span class="tag">网络安全自动化</span>
-              <span class="tag">多步推理与评测</span>
+              <span class="tag">多步推理</span>
               <span class="tag">文档理解</span>
             </div>
-          </div>
+          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 论文 -->
-    <section id="publications" class="section alt-bg">
-      <div class="container">
+      <section id="publications" class="section">
         <h2>论文 / Publications</h2>
-        <p class="section-intro">以下为 CV 中代表性论文（含已发表、在审和在投准备阶段）。</p>
+        <p class="section-intro">以下为 CV 中代表性工作（已发表 / 在审 / 准备投稿）。</p>
 
         <div class="pub-list">
           <article class="pub-item">
@@ -139,114 +126,87 @@
             </div>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 成果展示 -->
-    <section id="research" class="section">
-      <div class="container">
+      <section id="research" class="section">
         <h2>成果展示 / Research</h2>
         <div class="card-grid">
           <article class="card">
             <h3>WebPentestRAG</h3>
-            <p>
-              面向自动化 Web 渗透测试的 RAG 框架。设计 Web Task Graph 管理状态，并结合 grounded generation + dry-run validation，
-              在任务成功率上相较基线模型取得约 42% 的提升。
-            </p>
+            <p>面向自动化 Web 渗透测试的 RAG 框架。结合任务图管理与 grounded generation，在复杂任务中取得显著提升。</p>
             <p class="meta">University of Warwick · Master Dissertation</p>
           </article>
-
           <article class="card">
             <h3>MMSearch-R1</h3>
-            <p>
-              基于 GRPO 的多模态检索路由框架，让模型按需搜索并优化中间推理质量；在保持准确率前提下，将不必要检索率从 100% 降至 67.1%。
-            </p>
+            <p>基于 GRPO 的多模态检索路由框架，在保持准确率的前提下降低无效检索开销，提升知识密集任务效率。</p>
             <p class="meta">2025 - Present</p>
           </article>
-
           <article class="card">
             <h3>MIKRAG System</h3>
-            <p>
-              多意图、多模态 PDF 检索系统。通过意图分解、模态自适应加权与向量量化，在检索精度和效率上实现协同提升。
-            </p>
+            <p>多意图、多模态 PDF 检索系统，融合意图分解、模态加权与向量量化，兼顾检索精度与速度。</p>
             <p class="meta">ColQwen2.5 / BGE / Vespa</p>
           </article>
-
           <article class="card">
             <h3>DiaKG-GPT</h3>
-            <p>
-              基于数据增强的糖尿病智能问答系统，构建 DiaMediQA 数据集并结合 LoRA SFT 与 RLAIF 训练，显著提升医疗问答质量。
-            </p>
+            <p>面向糖尿病场景的智能问答系统，构建专用数据集并结合 SFT 与 RLAIF 训练，提升医学问答质量。</p>
             <p class="meta">本科优秀毕业论文项目</p>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 招生信息 -->
-    <section id="admissions" class="section alt-bg">
-      <div class="container narrow">
+      <section id="admissions" class="section">
         <h2>招生信息</h2>
-        <p>
-          当前页面为个人学术展示站，暂不发布正式硕博招生名额。若你对多模态 AI、RAG、智能体系统或网络安全自动化研究方向感兴趣，欢迎邮件联系进行研究合作、
-          项目共研或实习交流。
-        </p>
-        <p>联系邮箱：<a href="mailto:Jiashen.Liu@warwick.ac.uk">Jiashen.Liu@warwick.ac.uk</a></p>
-      </div>
-    </section>
+        <article class="panel">
+          <p>
+            当前站点用于学术展示。若你对多模态 AI、RAG、智能体系统或网络安全自动化方向感兴趣，欢迎邮件联系，
+            可交流研究合作、项目共研或实习。
+          </p>
+          <p>联系邮箱：<a href="mailto:Jiashen.Liu@warwick.ac.uk">Jiashen.Liu@warwick.ac.uk</a></p>
+        </article>
+      </section>
 
-    <!-- 获奖 -->
-    <section id="awards" class="section">
-      <div class="container">
+      <section id="awards" class="section">
         <h2>获奖</h2>
         <div class="timeline">
           <article class="timeline-item">
             <div class="time">2024</div>
-            <div class="content">南京农业大学优秀毕业论文奖（Outstanding Graduation Thesis Award）</div>
+            <div class="content">Outstanding Graduation Thesis Award, Nanjing Agricultural University</div>
           </article>
           <article class="timeline-item">
             <div class="time">2023</div>
-            <div class="content">江苏省政府海外学习奖学金（Jiangsu Provincial Government Overseas Study Scholarship）</div>
+            <div class="content">Jiangsu Provincial Government Overseas Study Scholarship</div>
           </article>
           <article class="timeline-item">
             <div class="time">2022</div>
-            <div class="content">华为 Global Campus AI Algorithm Elite Competition 参赛经历</div>
+            <div class="content">Global Campus AI Algorithm Elite Competition（Huawei）</div>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 教学 -->
-    <section id="teaching" class="section alt-bg">
-      <div class="container">
+      <section id="teaching" class="section">
         <h2>教学</h2>
         <ul class="simple-list">
-          <li>中文信息处理实践（Chinese Information Processing Practice）课程项目训练：序列标注、NER、CRF/HMM。</li>
-          <li>信息检索系统实践（Information Retrieval System Practice）：N-Gram、最大匹配、TF-IDF 与检索原型实现。</li>
-          <li>可支持方向：机器学习基础、RAG 工程实践、多模态检索与评测（后续可按岗位需求更新）。</li>
+          <li>中文信息处理实践：序列标注、NER、CRF/HMM。</li>
+          <li>信息检索系统实践：N-Gram、最大匹配、TF-IDF 与检索原型实现。</li>
+          <li>可支持方向：机器学习基础、RAG 工程实践、多模态检索与评测。</li>
         </ul>
-      </div>
-    </section>
+      </section>
 
-    <!-- 学术服务 -->
-    <section id="service" class="section">
-      <div class="container">
+      <section id="service" class="section">
         <h2>学术服务</h2>
         <ul class="simple-list">
-          <li>研究实践：参与跨团队项目协作，推进从方法设计到评测落地的一体化流程。</li>
-          <li>系统建设：构建向量数据库与多模态检索管线，支持知识密集任务的长期演进。</li>
-          <li>产业协作：参与企业级多智能体系统开发，面向高并发业务场景进行架构与算法优化。</li>
+          <li>跨团队研究项目协作，推进从方法设计到实验评测与系统落地。</li>
+          <li>向量数据库与多模态检索管线建设，支持知识密集任务持续迭代。</li>
+          <li>参与企业级多智能体系统开发，面向高并发场景进行架构优化。</li>
         </ul>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer class="site-footer">
-    <div class="container footer-flex">
-      <p>© <span id="year"></span> Jiashen Liu</p>
-      <a href="#top">Back to Top</a>
-    </div>
-  </footer>
+      <footer class="site-footer">
+        <p>© <span id="year"></span> Jiashen Liu</p>
+        <a href="#top">Back to Top</a>
+      </footer>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
