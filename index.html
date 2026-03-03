@@ -1,10 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jiashen Liu | Academic Homepage</title>
   <meta name="description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Jiashen Liu | Academic Homepage" />
+  <meta property="og:description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+  <meta property="og:image" content="assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jiashen Liu | Academic Homepage" />
+  <meta name="twitter:description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:wght@600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
@@ -51,13 +62,13 @@
           <a href="mailto:Jiashen.Liu@warwick.ac.uk" aria-label="Email" title="Email">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2 8 5 8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#about" aria-label="Location" title="Coventry, UK">
+          <span class="icon-static" aria-label="Location: Coventry, UK" title="Coventry, UK">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+          </span>
           <a href="assets/CV_Jiashen.pdf" target="_blank" rel="noopener noreferrer" aria-label="CV" title="CV">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5zm0 4.5L12 16.5 21 12M3 16.5 12 21l9-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="publications.html" aria-label="Google Scholar" title="Publications">
+          <a href="publications.html" aria-label="Publications" title="Publications">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 12.5h6M11.5 8.5c2.8 0 3.8 2 3.8 3.8 0 2.3-1.4 4.2-3.8 4.2-2.2 0-3.7-1.5-3.7-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           </a>
           <a href="https://github.com/michaelgentsJason" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
@@ -76,7 +87,7 @@
         </ul>
       </section>
 
-      <button class="like-btn" type="button" aria-label="Like">
+      <button class="like-btn" type="button" aria-label="Like" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -112,21 +123,21 @@
             <h3>MIKRAG: A Knowledge-Enhanced Multi-Intent Retrieval Framework with Adaptive Multimodal Fusion</h3>
             <p class="authors"><span>Liu, J.</span>, Lao, J. et al.</p>
             <p class="venue">Under Review, 2025</p>
-            <p class="labels">Equal Contribution · Multimodal Retrieval · RAG</p>
+            <p class="labels"><span>Equal Contribution</span><span>Multimodal Retrieval</span><span>RAG</span></p>
           </article>
 
           <article class="pub-card">
             <h3>FED-FSTQ: Fisher-Guided Token Quantization for Communication-Efficient Federated Fine-Tuning of LLMs on Edge Devices</h3>
             <p class="authors"><span>Li, C.</span>, Liu, J., Luo, F., Wu, K. et al.</p>
             <p class="venue">Submitted to IEEE TMC, 2026</p>
-            <p class="labels">Federated Learning · LLM Fine-Tuning · Edge AI</p>
+            <p class="labels"><span>Federated Learning</span><span>LLM Fine-Tuning</span><span>Edge AI</span></p>
           </article>
 
           <article class="pub-card">
             <h3>SportAgentBench: Evaluating Tool-Augmented and Multi-Hop Reasoning in Sports Video Understanding</h3>
             <p class="authors"><span>Liu, J.</span>, Fang, Y., Li, H. et al.</p>
             <p class="venue">In Preparation for ECCV, 2026</p>
-            <p class="labels">Benchmark · Multi-Hop Reasoning · Video Understanding</p>
+            <p class="labels"><span>Benchmark</span><span>Multi-Hop Reasoning</span><span>Video Understanding</span></p>
           </article>
         </div>
       </section>

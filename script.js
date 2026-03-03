@@ -1,4 +1,4 @@
-﻿// 顶部导航：移动端开关
+// 顶部导航：移动端开关
 const menuToggle = document.querySelector('#menuToggle');
 const topNav = document.querySelector('#topNav');
 
@@ -10,7 +10,7 @@ if (menuToggle && topNav) {
 
   topNav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 920) {
+      if (window.innerWidth <= 1023) {
         topNav.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
       }
@@ -68,7 +68,17 @@ const setActiveNav = () => {
   });
 };
 
-window.addEventListener('scroll', setActiveNav);
+// 用 requestAnimationFrame 节流，避免频繁触发
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      setActiveNav();
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
+});
 window.addEventListener('load', setActiveNav);
 
 // 深浅色主题切换（默认深色）

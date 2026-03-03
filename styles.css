@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --nav-h: 64px;
   --content-start: calc(var(--nav-h) + 24px);
   --bg: #f8fafc;
@@ -18,8 +18,8 @@ body[data-theme="dark"] {
   --bg: #0f172a;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted: #94a3b8;
-  --surface-1: #1f2937;
+  --text-muted: #64748b;
+  --surface-1: #1e293b;
   --surface-2: #1f2937;
   --line: rgba(148, 163, 184, 0.24);
   --accent: #eabf6d;
@@ -203,7 +203,8 @@ a {
   padding: 0 0.5rem;
 }
 
-.icon-row a {
+.icon-row a,
+.icon-row .icon-static {
   width: 36px;
   height: 36px;
   display: inline-flex;
@@ -216,6 +217,10 @@ a {
 
 .icon-row a:hover {
   color: var(--accent);
+}
+
+.icon-row .icon-static {
+  cursor: default;
 }
 
 .icon-row svg {
@@ -253,6 +258,20 @@ a {
   margin: 0.45rem 0;
   color: var(--text-secondary);
   font-size: 0.9rem;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.interest-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.8;
 }
 
 .like-btn {
@@ -353,6 +372,7 @@ a {
 .pub-card {
   background: var(--surface-2);
   border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
   border-radius: 0.5rem;
   box-shadow: var(--shadow-sm);
   padding: 1rem;
@@ -373,8 +393,7 @@ a {
 }
 
 .authors,
-.venue,
-.labels {
+.venue {
   margin: 0.25rem 0;
   font-size: 0.92rem;
   color: var(--text-secondary);
@@ -383,6 +402,27 @@ a {
 .authors span {
   color: var(--accent);
   font-weight: 600;
+}
+
+/* 标签 Chip 样式 */
+.labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+}
+
+.labels span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  white-space: nowrap;
 }
 
 .project-grid {
@@ -394,6 +434,7 @@ a {
 .project-card {
   background: var(--surface-2);
   border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
   border-radius: 0.5rem;
   box-shadow: var(--shadow-sm);
   padding: 1rem;
@@ -427,11 +468,20 @@ a {
   gap: 0.7rem;
 }
 
+/* 年份 badge */
 .timeline span {
-  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  min-width: 56px;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
   font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 0.2rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  margin-top: 0.15rem;
+  white-space: nowrap;
 }
 
 .timeline p {
@@ -524,7 +574,7 @@ a {
   .left-col {
     grid-column: span 1;
     position: sticky;
-    top: 2rem;
+    top: calc(var(--nav-h) + 1.5rem);
     align-self: start;
   }
 
@@ -588,5 +638,3 @@ a {
     grid-template-columns: 1fr;
   }
 }
-
-
