@@ -22,6 +22,7 @@ if (menuToggle && topNav) {
 const sections = document.querySelectorAll('main section[id]');
 const navLinks = document.querySelectorAll('.top-nav a');
 const currentPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+const normalizePath = (value) => value.replace(/^\.\//, '').toLowerCase();
 
 const setActiveNav = () => {
   const hasSections = sections.length > 0;
@@ -40,7 +41,7 @@ const setActiveNav = () => {
   }
 
   navLinks.forEach((link) => {
-    const href = (link.getAttribute('href') || '').toLowerCase();
+    const href = normalizePath(link.getAttribute('href') || '');
     let isActive = false;
 
     // 同页锚点：#about
@@ -48,11 +49,13 @@ const setActiveNav = () => {
       isActive = href.slice(1) === activeId;
     }
 
-    // 跨页锚点：首页各 section
+    // 跨页锚点：index.html#about
     if (!isActive && href.includes('#')) {
-      const [pathPart] = href.split('#');
-      if (pathPart && (pathPart === currentPath || (currentPath === '' && pathPart === 'index.html'))) {
-        isActive = false;
+      const [pathPart, hashPart] = href.split('#');
+      const resolvedPath = pathPart || currentPath;
+      if (hasSections) {
+        const samePage = resolvedPath === currentPath || (resolvedPath === 'index.html' && currentPath === 'index.html');
+        isActive = samePage && hashPart === activeId;
       }
     }
 
