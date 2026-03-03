@@ -1,91 +1,80 @@
-﻿// ========== 移动端侧边栏开关 ==========
-const mobileToggle = document.querySelector('#mobileNavToggle');
-const mobileOverlay = document.querySelector('#mobileOverlay');
-const sidebar = document.querySelector('#sidebar');
-const nav = document.querySelector('#site-nav');
+﻿// 顶部导航：移动端开关
+const menuToggle = document.querySelector('#menuToggle');
+const topNav = document.querySelector('#topNav');
 
-const closeSidebar = () => {
-  if (!sidebar || !mobileToggle || !mobileOverlay) return;
-  sidebar.classList.remove('open');
-  mobileOverlay.classList.remove('open');
-  mobileToggle.setAttribute('aria-expanded', 'false');
-};
-
-if (mobileToggle && sidebar && mobileOverlay) {
-  mobileToggle.addEventListener('click', () => {
-    const isOpen = sidebar.classList.toggle('open');
-    mobileOverlay.classList.toggle('open', isOpen);
-    mobileToggle.setAttribute('aria-expanded', String(isOpen));
+if (menuToggle && topNav) {
+  menuToggle.addEventListener('click', () => {
+    const isOpen = topNav.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
   });
 
-  mobileOverlay.addEventListener('click', closeSidebar);
-}
-
-if (nav) {
-  nav.querySelectorAll('a').forEach((link) => {
+  topNav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 820) {
-        closeSidebar();
+      if (window.innerWidth <= 920) {
+        topNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
   });
 }
 
-// ========== 导航高亮 ==========
+// 滚动高亮当前导航项
 const sections = document.querySelectorAll('main section[id]');
-const navLinks = document.querySelectorAll('#site-nav a');
+const navLinks = document.querySelectorAll('.top-nav a');
 
 const setActiveNav = () => {
-  let currentId = '';
-  const offset = 140;
+  let activeId = 'about';
+  const offset = 130;
 
   sections.forEach((section) => {
-    const top = section.offsetTop - offset;
-    if (window.scrollY >= top) {
-      currentId = section.id;
+    const sectionTop = section.offsetTop - offset;
+    if (window.scrollY >= sectionTop) {
+      activeId = section.id;
     }
   });
 
   navLinks.forEach((link) => {
     const targetId = link.getAttribute('href').slice(1);
-    link.classList.toggle('active', targetId === currentId);
+    link.classList.toggle('active', targetId === activeId);
   });
 };
 
 window.addEventListener('scroll', setActiveNav);
 window.addEventListener('load', setActiveNav);
 
-// ========== 主题切换（浅色/深色 + 本地持久化） ==========
+// 深浅色主题切换（默认深色）
 const themeToggle = document.querySelector('#themeToggle');
-const storageKey = 'academic-theme';
+const themeIcon = document.querySelector('#themeIcon');
+const THEME_KEY = 'academic-theme';
 
-const setTheme = (theme) => {
+const applyTheme = (theme) => {
   document.body.setAttribute('data-theme', theme);
-  if (themeToggle) {
-    themeToggle.textContent = theme === 'dark' ? '切换浅色' : '切换深色';
+  if (themeIcon) {
+    themeIcon.textContent = theme === 'dark' ? '☾' : '☀';
   }
 };
 
-const getPreferredTheme = () => {
-  const savedTheme = localStorage.getItem(storageKey);
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    return savedTheme;
+const initTheme = () => {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === 'light' || saved === 'dark') {
+    applyTheme(saved);
+    return;
   }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  applyTheme('dark');
 };
 
-setTheme(getPreferredTheme());
+initTheme();
 
 if (themeToggle) {
   themeToggle.addEventListener('click', () => {
-    const currentTheme = document.body.getAttribute('data-theme') || 'light';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    localStorage.setItem(storageKey, nextTheme);
+    const current = document.body.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
   });
 }
 
-// ========== 页脚年份 ==========
+// 页脚年份
 const yearNode = document.querySelector('#year');
 if (yearNode) {
   yearNode.textContent = String(new Date().getFullYear());
