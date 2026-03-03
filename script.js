@@ -18,24 +18,50 @@ if (menuToggle && topNav) {
   });
 }
 
-// 滚动高亮当前导航项
+// 滚动高亮当前导航项（兼容多页面链接）
 const sections = document.querySelectorAll('main section[id]');
 const navLinks = document.querySelectorAll('.top-nav a');
+const currentPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
 
 const setActiveNav = () => {
-  let activeId = 'about';
-  const offset = 130;
+  const hasSections = sections.length > 0;
+  let activeId = '';
 
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop - offset;
-    if (window.scrollY >= sectionTop) {
-      activeId = section.id;
-    }
-  });
+  if (hasSections) {
+    activeId = 'about';
+    const offset = 130;
+
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - offset;
+      if (window.scrollY >= sectionTop) {
+        activeId = section.id;
+      }
+    });
+  }
 
   navLinks.forEach((link) => {
-    const targetId = link.getAttribute('href').slice(1);
-    link.classList.toggle('active', targetId === activeId);
+    const href = (link.getAttribute('href') || '').toLowerCase();
+    let isActive = false;
+
+    // 同页锚点：#about
+    if (hasSections && href.startsWith('#')) {
+      isActive = href.slice(1) === activeId;
+    }
+
+    // 跨页锚点：首页各 section
+    if (!isActive && href.includes('#')) {
+      const [pathPart] = href.split('#');
+      if (pathPart && (pathPart === currentPath || (currentPath === '' && pathPart === 'index.html'))) {
+        isActive = false;
+      }
+    }
+
+    // 页面链接：publications.html
+    if (!isActive && href && !href.includes('#')) {
+      isActive = href === currentPath;
+    }
+
+    link.classList.toggle('active', isActive);
   });
 };
 
