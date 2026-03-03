@@ -1,5 +1,6 @@
 ﻿:root {
   --nav-h: 64px;
+  --content-start: calc(var(--nav-h) + 24px);
   --bg: #f8fafc;
   --text-primary: #0f172a;
   --text-secondary: #334155;
@@ -41,7 +42,6 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   line-height: 1.75;
-  padding-top: var(--nav-h);
 }
 
 a {
@@ -56,8 +56,7 @@ a {
   right: 0;
   z-index: 50;
   border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
-  backdrop-filter: blur(8px);
+  background: var(--bg);
 }
 
 .topbar-inner {
@@ -140,8 +139,8 @@ a {
 
 .page-wrap {
   max-width: 1152px;
-  margin: 0 auto;
-  padding: 1.25rem 1rem 2rem;
+  margin: var(--content-start) auto 0;
+  padding: 0 1rem 2rem;
   min-height: 100vh;
 }
 
@@ -498,6 +497,7 @@ a {
 @media (min-width: 1024px) {
   :root {
     --nav-h: 80px;
+    --content-start: calc(var(--nav-h) + 28px);
   }
 
   .topbar-inner {
@@ -516,7 +516,6 @@ a {
   }
 
   .page-wrap {
-    padding-top: 1.75rem;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 3rem;
@@ -589,4 +588,5 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
 
