@@ -253,10 +253,11 @@ a {
 
 .like-btn {
   margin: 0 auto;
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
@@ -269,13 +270,22 @@ a {
 }
 
 .like-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
 }
 
 .like-btn:hover {
   background: color-mix(in srgb, #ef4444 16%, var(--surface-2));
   color: #f87171;
+}
+
+.like-btn.liked {
+  background: color-mix(in srgb, #ef4444 22%, var(--surface-2));
+  color: #ef4444;
+}
+
+.like-btn.like-pop {
+  transform: scale(1.05);
 }
 
 .right-col {
@@ -332,6 +342,7 @@ a {
 
 .pub-list {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 
@@ -437,6 +448,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: 0.5rem;
 }
 
@@ -446,6 +458,24 @@ a {
   font-weight: 500;
   border-radius: 0.35rem;
   padding: 0.15rem 0.25rem;
+  white-space: nowrap;
+}
+
+.publications-page .page-wrap.single {
+  max-width: 1160px;
+}
+
+.publications-page .right-col {
+  width: 100%;
+}
+
+.publications-page .pub-list {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0.9rem;
+}
+
+.publications-page .pub-card {
+  height: 100%;
 }
 
 .footer {
@@ -500,7 +530,7 @@ a {
 
   .page-wrap.single {
     display: block;
-    max-width: 960px;
+    max-width: 1040px;
   }
 }
 
@@ -544,5 +574,9 @@ a {
   .footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .publications-page .pub-list {
+    grid-template-columns: 1fr;
   }
 }

@@ -108,3 +108,30 @@ const yearNode = document.querySelector('#year');
 if (yearNode) {
   yearNode.textContent = String(new Date().getFullYear());
 }
+
+// Like 按钮交互：可点击、可取消、并记住状态
+const likeBtn = document.querySelector('.like-btn');
+const likeText = document.querySelector('.like-text');
+const LIKE_KEY = 'academic-like-state';
+
+if (likeBtn && likeText) {
+  const saved = localStorage.getItem(LIKE_KEY);
+  const isLiked = saved === '1';
+
+  const renderLike = (liked) => {
+    likeBtn.classList.toggle('liked', liked);
+    likeBtn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+    likeText.textContent = liked ? 'Liked' : 'Like';
+  };
+
+  renderLike(isLiked);
+
+  likeBtn.addEventListener('click', () => {
+    const nextLiked = !(localStorage.getItem(LIKE_KEY) === '1');
+    localStorage.setItem(LIKE_KEY, nextLiked ? '1' : '0');
+    renderLike(nextLiked);
+
+    likeBtn.classList.add('like-pop');
+    setTimeout(() => likeBtn.classList.remove('like-pop'), 160);
+  });
+}
