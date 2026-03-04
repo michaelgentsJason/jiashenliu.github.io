@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Jiashen Liu's Blog"
+  description: "Academic Research & Insights"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/michaelgentsJason
+      - icon: file-earmark-pdf
+        href: assets/CV_Jiashen.pdf
+  page-footer:
+    left: "Copyright 2026, Jiashen Liu"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
