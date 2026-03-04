@@ -5,11 +5,11 @@ project:
 website:
   title: "Jiashen Liu's Blog"
   description: "Academic Research & Insights"
-  site-url: "https://jiashenliu.github.io/blog"
+  site-url: "https://michaelgentsJason.github.io/jiashenliu.github.io/blog"
   navbar:
     left:
       - text: "← Homepage"
-        href: "https://jiashenliu.github.io"
+        href: "https://michaelgentsJason.github.io/jiashenliu.github.io/"
     right:
       - text: "Posts"
         href: index.qmd
@@ -22,7 +22,7 @@ website:
     left: "© 2026 Jiashen Liu"
     right:
       - text: "← Back to Homepage"
-        href: "https://jiashenliu.github.io"
+        href: "https://michaelgentsJason.github.io/jiashenliu.github.io/"
 
 format:
   html:
