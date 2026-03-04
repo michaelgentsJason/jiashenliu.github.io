@@ -35,8 +35,9 @@ website:
 format:
   html:
     theme:
-      light: [cosmo, custom.css]
-      dark: [darkly, custom.css]
+      light: cosmo
+      dark: darkly
+    css: custom.css
     toc: true
     toc-depth: 3
     link-external-newwindow: false
