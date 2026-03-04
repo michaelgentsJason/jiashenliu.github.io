@@ -3,22 +3,31 @@ project:
   output-dir: docs
 
 website:
-  title: "Jiashen Liu's Blog"
+  title: "Jiashen Liu"
   description: "Academic Research & Insights"
   site-url: "https://michaelgentsJason.github.io/jiashenliu.github.io/blog"
+  favicon: assets/favicon.svg
+
   navbar:
+    pinned: true
+    logo: assets/avatar.jpg
+    logo-alt: "Jiashen Liu"
+    logo-href: "https://michaelgentsJason.github.io/jiashenliu.github.io/"
     left:
-      - text: "← Homepage"
-        href: "https://michaelgentsJason.github.io/jiashenliu.github.io/"
-    right:
       - text: "Posts"
         href: index.qmd
-      - about.qmd
+      - text: "About"
+        href: about.qmd
+    right:
       - icon: github
         href: https://github.com/michaelgentsJason
+        aria-label: GitHub
       - icon: file-earmark-pdf
         href: assets/CV_Jiashen.pdf
+        aria-label: Download CV
+
   page-footer:
+    background: light
     left: "© 2026 Jiashen Liu"
     right:
       - text: "← Back to Homepage"
@@ -26,5 +35,9 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: [cosmo, custom.css]
+      dark: [darkly, custom.css]
     toc: true
+    toc-depth: 3
+    link-external-newwindow: false

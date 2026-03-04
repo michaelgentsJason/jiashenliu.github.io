@@ -1,0 +1,172 @@
+/* ── Google Fonts (matches main academic site) ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:wght@600;700&display=swap');
+
+/* ── Accent color tokens ── */
+:root {
+  --brand: #c9902f;
+  --brand-hover: #af7f2e;
+  --brand-bg: rgba(201, 144, 47, 0.10);
+  --brand-border: rgba(201, 144, 47, 0.28);
+}
+
+[data-bs-theme="dark"] {
+  --brand: #eabf6d;
+  --brand-hover: #d8a84e;
+  --brand-bg: rgba(234, 191, 109, 0.10);
+  --brand-border: rgba(234, 191, 109, 0.28);
+}
+
+/* ── Body / Typography ── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.quarto-title h1 {
+  font-family: 'Crimson Text', Georgia, serif !important;
+}
+
+/* ── Circular avatar logo in navbar ── */
+.navbar-logo {
+  border-radius: 50% !important;
+  width: 34px !important;
+  height: 34px !important;
+  object-fit: cover !important;
+  object-position: 32% center !important;
+  margin-right: 0.45rem !important;
+  border: 2px solid var(--brand-border);
+  transition: border-color 0.2s ease;
+}
+
+.navbar-logo:hover {
+  border-color: var(--brand);
+}
+
+/* ── Navbar brand name ── */
+.navbar-brand {
+  font-family: 'Crimson Text', serif !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+}
+
+/* ── Divider below navbar ── */
+.navbar {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.18) !important;
+}
+
+/* ── Accent color for links ── */
+a:not(.nav-link):not(.navbar-brand):not(.btn):not(.quarto-category):not(.listing-category) {
+  color: var(--brand) !important;
+}
+
+a:not(.nav-link):not(.navbar-brand):not(.btn):not(.quarto-category):not(.listing-category):hover {
+  color: var(--brand-hover) !important;
+}
+
+/* ── Active / hover nav link accent ── */
+.nav-link:hover,
+.nav-link.active {
+  color: var(--brand) !important;
+}
+
+/* ── Post listing cards ── */
+.quarto-post {
+  border-radius: 0.6rem !important;
+  border: 1px solid rgba(128, 128, 128, 0.18) !important;
+  border-left: 3px solid var(--brand) !important;
+  padding: 0.25rem 0 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  overflow: hidden;
+}
+
+.quarto-post:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+.quarto-post .metadata {
+  border-top: 1px solid rgba(128, 128, 128, 0.13) !important;
+}
+
+/* ── Category / tag chips ── */
+.quarto-category,
+.listing-category {
+  border-radius: 999px !important;
+  font-size: 0.74rem !important;
+  font-weight: 500 !important;
+  padding: 0.12rem 0.55rem !important;
+  border: 1px solid var(--brand-border) !important;
+  background: var(--brand-bg) !important;
+  color: var(--brand) !important;
+  text-decoration: none !important;
+  transition: background 0.15s ease !important;
+}
+
+.quarto-category:hover,
+.listing-category:hover {
+  background: rgba(201, 144, 47, 0.18) !important;
+  color: var(--brand) !important;
+}
+
+[data-bs-theme="dark"] .quarto-category:hover,
+[data-bs-theme="dark"] .listing-category:hover {
+  background: rgba(234, 191, 109, 0.18) !important;
+}
+
+/* ── Title banner (individual post pages) ── */
+.quarto-title-banner {
+  padding-top: 3rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* ── TOC accent ── */
+#TOC a:hover,
+#TOC .active > a {
+  color: var(--brand) !important;
+}
+
+#TOC .active > a {
+  border-left: 2px solid var(--brand);
+  padding-left: 0.4rem;
+}
+
+/* ── Callout accent ── */
+.callout-note {
+  border-left-color: var(--brand) !important;
+}
+
+.callout-note > .callout-header {
+  background-color: var(--brand-bg) !important;
+  color: var(--brand) !important;
+}
+
+/* ── Footer ── */
+.nav-footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.18) !important;
+  font-size: 0.85rem;
+}
+
+/* ── About page template ── */
+.about-entity .about-links .about-link {
+  border-radius: 0.4rem;
+  border-color: var(--brand-border) !important;
+  color: var(--brand) !important;
+  transition: background 0.2s ease;
+}
+
+.about-entity .about-links .about-link:hover {
+  background: var(--brand-bg) !important;
+}
+
+/* ── Smooth transitions ── */
+* {
+  transition-property: none;
+}
+
+.quarto-post,
+.navbar-logo,
+a {
+  transition-property: color, background, box-shadow, transform, border-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}

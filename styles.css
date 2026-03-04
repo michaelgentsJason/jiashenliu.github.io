@@ -532,6 +532,66 @@ a {
   height: 100%;
 }
 
+/* Blog nav link — slightly distinct from normal section anchors */
+.nav-blog-link {
+  color: var(--accent) !important;
+  font-weight: 600 !important;
+}
+
+/* Blog portal card */
+.blog-portal {
+  display: block;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.blog-portal:hover {
+  transform: scale(1.015);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+}
+
+.blog-portal-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blog-portal-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.blog-portal-text {
+  flex: 1;
+}
+
+.blog-portal-text strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.blog-portal-text p {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.blog-portal-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
 .footer {
   border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   margin-top: 1.5rem;
