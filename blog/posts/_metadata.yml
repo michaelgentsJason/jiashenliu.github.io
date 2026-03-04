@@ -1,0 +1,5 @@
+# Applied to all posts in this directory and subdirectories
+include-after-body: author-bio.html
+
+# Show title as a banner block on every post
+title-block-banner: true
