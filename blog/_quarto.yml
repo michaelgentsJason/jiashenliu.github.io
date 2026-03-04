@@ -27,7 +27,6 @@ website:
         aria-label: Download CV
 
   page-footer:
-    background: light
     left: "© 2026 Jiashen Liu"
     right:
       - text: "← Back to Homepage"

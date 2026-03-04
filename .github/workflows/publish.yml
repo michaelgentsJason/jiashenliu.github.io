@@ -27,17 +27,16 @@ jobs:
           # ── Main academic site (root-level static files) ──
           cp index.html publications.html styles.css script.js _deploy/
           cp -r assets _deploy/assets
-          # Suppress Jekyll processing so raw HTML/CSS is served as-is
           touch _deploy/.nojekyll
 
           # ── Blog (Quarto output → /blog subdirectory) ──
           cp -r blog/docs/. _deploy/blog/
 
       - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _deploy
-          publish_branch: gh-pages
-          # Keep gh-pages as a clean single-commit branch (standard practice)
-          force_orphan: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: _deploy
+          clean: true
+          single-commit: true
