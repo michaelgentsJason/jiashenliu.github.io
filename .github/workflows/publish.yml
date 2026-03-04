@@ -1,17 +1,15 @@
 on:
   push:
     branches: main
-    paths:
-      - 'blog/**'
-      - '.github/workflows/publish.yml'
 
-name: Render and Publish Blog
+name: Deploy Site
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -19,10 +17,27 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Render Quarto blog
+        run: quarto render blog
+
+      - name: Assemble full deployment directory
+        run: |
+          mkdir -p _deploy/blog
+
+          # ── Main academic site (root-level static files) ──
+          cp index.html publications.html styles.css script.js _deploy/
+          cp -r assets _deploy/assets
+          # Suppress Jekyll processing so raw HTML/CSS is served as-is
+          touch _deploy/.nojekyll
+
+          # ── Blog (Quarto output → /blog subdirectory) ──
+          cp -r blog/docs/. _deploy/blog/
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          target: gh-pages
-          path: blog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _deploy
+          publish_branch: gh-pages
+          # Keep gh-pages as a clean single-commit branch (standard practice)
+          force_orphan: true

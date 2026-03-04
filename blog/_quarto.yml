@@ -5,18 +5,26 @@ project:
 website:
   title: "Jiashen Liu's Blog"
   description: "Academic Research & Insights"
+  site-url: "https://jiashenliu.github.io/blog"
   navbar:
+    left:
+      - text: "← Homepage"
+        href: "https://jiashenliu.github.io"
     right:
+      - text: "Posts"
+        href: index.qmd
       - about.qmd
       - icon: github
         href: https://github.com/michaelgentsJason
       - icon: file-earmark-pdf
         href: assets/CV_Jiashen.pdf
   page-footer:
-    left: "Copyright 2026, Jiashen Liu"
+    left: "© 2026 Jiashen Liu"
+    right:
+      - text: "← Back to Homepage"
+        href: "https://jiashenliu.github.io"
 
 format:
   html:
     theme: cosmo
-    css: styles.css
     toc: true
