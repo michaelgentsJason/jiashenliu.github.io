@@ -105,7 +105,7 @@ Here is a list of the main platforms and software tools I used for this project:
 - The workhorse was [Claude Code](https://code.claude.com/docs/en/overview). I’m on the Max plan (USD 100/month) but still managed to hit the 5-hour limit a few times. This also lets me use Claude.ai, Claude Cowork and Claude in Chrome, which I used for specific tasks as described above.
 - I use [GitHub](https://github.com/) for version control and collaboration in most of my projects. As an academic, I get a free GitHub Copilot Pro subscription, which I used to access Gemini Pro in [OpenCode](https://opencode.ai/).
 - [Quarto](https://quarto.org/) for writing the paper in markdown and rendering it to PDF. Very convenient when working with AI agents as markdown is as close to a natural language as you can get while still being structured enough for the AI to understand the document structure and make specific edits.
-- [VS Code](https://code.visualstudio.com/) with a [Devcontainer](../../posts/devcontainers/index.html).
+- [VS Code](https://code.visualstudio.com/) with a [Devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 - [Codex CLI](https://developers.openai.com/codex/cli) and ChatGPT. I’m on the Plus plan, which was plenty for the use I made of it.
 - Python and [uv](https://docs.astral.sh/uv/guides/projects/) for the code. I also used [sympy](https://www.sympy.org/en/index.html) for the analytical solutions and [numpy](https://numpy.org/) for the numerical solutions.
 - [Refine](https://www.refine.ink/) (using a free review) for an additional round of feedback on the paper.
