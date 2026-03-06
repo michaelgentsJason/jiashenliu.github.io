@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jiashen Liu | Academic Homepage</title>
+  <meta name="description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Jiashen Liu | Academic Homepage" />
+  <meta property="og:description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+  <meta property="og:image" content="assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jiashen Liu | Academic Homepage" />
+  <meta name="twitter:description" content="Jiashen Liu 的学术主页：研究方向、论文、项目、获奖与学术服务。" />
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:wght@600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-theme="dark">
+  <!-- 顶部导航：参考图风格，深色横向导航 + 主题切换 -->
+  <header class="topbar" id="top">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">Jiashen Liu(刘家燊)</a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="切换导航" aria-controls="topNav" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="top-nav" id="topNav" aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#admissions">招生信息</a>
+        <a href="#research">成果展示</a>
+        <a href="#publications">论文</a>
+        <a href="#awards">获奖</a>
+        <a href="#teaching">教学</a>
+        <a href="#service">学术服务</a>
+        <a href="https://michaelgentsJason.github.io/jiashenliu.github.io/blog/" class="nav-blog-link">Blog ↗</a>
+      </nav>
+
+      <button class="theme-btn" id="themeToggle" aria-label="切换浅色深色">
+        <span id="themeIcon">☾</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-wrap">
+    <!-- 左侧个人信息区 -->
+    <aside class="left-col">
+      <section class="profile-card">
+        <img class="avatar" src="assets/avatar.jpg" alt="Jiashen Liu 头像" />
+        <h1>刘家燊</h1>
+        <p class="profile-title">PhD. Student</p>
+        <p class="profile-affiliation">University of Warwick, School of Engineering</p>
+
+        <div class="icon-row">
+          <a href="mailto:Jiashen.Liu@warwick.ac.uk" aria-label="Email" title="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2 8 5 8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <span class="icon-static" aria-label="Location: Coventry, UK" title="Coventry, UK">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <a href="assets/CV_Jiashen.pdf" target="_blank" rel="noopener noreferrer" aria-label="CV" title="CV">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5zm0 4.5L12 16.5 21 12M3 16.5 12 21l9-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="publications.html" aria-label="Publications" title="Publications">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 12.5h6M11.5 8.5c2.8 0 3.8 2 3.8 3.8 0 2.3-1.4 4.2-3.8 4.2-2.2 0-3.7-1.5-3.7-3.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </a>
+          <a href="https://github.com/michaelgentsJason" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18c-4 1.2-4-2-6-2m12 4v-3.2a2.8 2.8 0 0 0-.8-2.2c2.6-.3 5.3-1.3 5.3-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.3 1.2a11.4 11.4 0 0 0-6 0C6.5 2.9 5.5 3.2 5.5 3.2a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.6c0 4.7 2.7 5.7 5.3 6a2.8 2.8 0 0 0-.8 2.2V21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="interest-card">
+        <h2>Research Interests</h2>
+        <ul>
+          <li>多模态推理与检索增强生成（RAG）</li>
+          <li>网络安全自动化与智能体系统</li>
+          <li>高风险场景中的结构化决策与评测</li>
+          <li>多模态文档理解与知识工程</li>
+        </ul>
+      </section>
+
+      <button class="like-btn" type="button" aria-label="Like" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="like-text">Like</span>
+      </button>
+    </aside>
+
+    <!-- 右侧内容区 -->
+    <main class="right-col">
+      <section id="about" class="section">
+        <h2>关于</h2>
+        <p>
+          我是 <strong>Jiashen Liu / 刘家燊</strong>，现就读于 University of Warwick（Cyber Security Engineering, MSc with Distinction）。
+          本科毕业于南京农业大学信息管理与信息系统专业，毕业论文 <strong>DIAKG-GPT</strong> 获校级优秀毕业论文奖。
+        </p>
+        <p>
+          我的研究聚焦于<strong>多模态 AI</strong>与<strong>知识密集型推理系统</strong>，重点关注视觉-语言-结构化知识融合、工具增强推理与复杂任务多步决策。
+          近期研究涵盖 Web 安全自动化、文档检索理解与多模态评测基准构建。
+        </p>
+        <p>
+          联系方式：<a href="mailto:Jiashen.Liu@warwick.ac.uk">Jiashen.Liu@warwick.ac.uk</a>
+        </p>
+      </section>
+
+      <section id="publications" class="section">
+        <div class="section-head">
+          <h2>代表性论文</h2>
+          <a href="publications.html">View All →</a>
+        </div>
+
+        <div class="pub-list">
+          <article class="pub-card">
+            <h3>MIKRAG: A Knowledge-Enhanced Multi-Intent Retrieval Framework with Adaptive Multimodal Fusion</h3>
+            <p class="authors"><span>Liu, J.</span>, Lao, J. et al.</p>
+            <p class="venue">Under Review, 2025</p>
+            <p class="labels"><span>Equal Contribution</span><span>Multimodal Retrieval</span><span>RAG</span></p>
+          </article>
+
+          <article class="pub-card">
+            <h3>FED-FSTQ: Fisher-Guided Token Quantization for Communication-Efficient Federated Fine-Tuning of LLMs on Edge Devices</h3>
+            <p class="authors"><span>Li, C.</span>, Liu, J., Luo, F., Wu, K. et al.</p>
+            <p class="venue">Submitted to IEEE TMC, 2026</p>
+            <p class="labels"><span>Federated Learning</span><span>LLM Fine-Tuning</span><span>Edge AI</span></p>
+          </article>
+
+          <article class="pub-card">
+            <h3>SportAgentBench: Evaluating Tool-Augmented and Multi-Hop Reasoning in Sports Video Understanding</h3>
+            <p class="authors"><span>Liu, J.</span>, Fang, Y., Li, H. et al.</p>
+            <p class="venue">In Preparation for ECCV, 2026</p>
+            <p class="labels"><span>Benchmark</span><span>Multi-Hop Reasoning</span><span>Video Understanding</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="research" class="section">
+        <h2>成果展示</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <h3>WebPentestRAG</h3>
+            <p>面向自动化 Web 渗透测试的检索增强框架，集成任务图状态管理与 grounded generation，显著提升复杂攻防任务成功率。</p>
+          </article>
+          <article class="project-card">
+            <h3>MMSearch-R1</h3>
+            <p>基于 GRPO 的多模态智能检索路由方法，在保持准确率下显著降低不必要检索，提升推理效率与可解释性。</p>
+          </article>
+          <article class="project-card">
+            <h3>DiaKG-GPT</h3>
+            <p>面向糖尿病问答场景的医疗智能系统，结合数据增强、SFT 与 RLAIF 策略，优化专业医疗问答质量。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="blog" class="section">
+        <h2>博客</h2>
+        <a class="blog-portal" href="https://michaelgentsJason.github.io/jiashenliu.github.io/blog/">
+          <div class="blog-portal-inner">
+            <svg class="blog-portal-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="blog-portal-text">
+              <strong>Jiashen Liu's Blog</strong>
+              <p>Academic Research &amp; Insights — AI 研究、方法论与思考。</p>
+            </div>
+            <svg class="blog-portal-arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+      </section>
+
+      <section id="admissions" class="section">
+        <h2>招生信息</h2>
+        <p>欢迎对多模态 AI、RAG、智能体与网络安全自动化感兴趣的同学联系交流（合作研究 / 项目实习）。</p>
+      </section>
+
+      <section id="awards" class="section">
+        <h2>获奖</h2>
+        <div class="timeline">
+          <article><span>2024</span><p>Outstanding Graduation Thesis Award, Nanjing Agricultural University</p></article>
+          <article><span>2023</span><p>Jiangsu Provincial Government Overseas Study Scholarship</p></article>
+          <article><span>2022</span><p>Huawei Global Campus AI Algorithm Elite Competition</p></article>
+        </div>
+      </section>
+
+      <section id="teaching" class="section">
+        <h2>教学</h2>
+        <ul class="plain-list">
+          <li>中文信息处理实践：序列标注、NER、CRF/HMM。</li>
+          <li>信息检索系统实践：N-Gram、最大匹配、TF-IDF 与检索原型实现。</li>
+          <li>可支持方向：机器学习基础、RAG 工程实践、多模态评测。</li>
+        </ul>
+      </section>
+
+      <section id="service" class="section">
+        <h2>学术服务</h2>
+        <ul class="plain-list">
+          <li>跨团队研究协作：从方法设计到实验评测再到系统落地。</li>
+          <li>检索系统建设：多模态向量数据库与查询优化管线。</li>
+          <li>产业实践：企业级多智能体系统开发与高并发架构优化。</li>
+        </ul>
+      </section>
+
+      <footer class="footer">
+        <p>© <span id="year"></span> Jiashen Liu</p>
+        <a href="#top">Back to Top</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

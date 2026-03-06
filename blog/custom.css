@@ -1,0 +1,252 @@
+/* ── Google Fonts (matches main academic site) ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:wght@600;700&display=swap');
+
+/* ── Accent color tokens ── */
+:root {
+  --brand: #c9902f;
+  --brand-hover: #af7f2e;
+  --brand-bg: rgba(201, 144, 47, 0.10);
+  --brand-border: rgba(201, 144, 47, 0.28);
+}
+
+[data-bs-theme="dark"] {
+  --brand: #eabf6d;
+  --brand-hover: #d8a84e;
+  --brand-bg: rgba(234, 191, 109, 0.10);
+  --brand-border: rgba(234, 191, 109, 0.28);
+}
+
+/* ── Body / Typography ── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.quarto-title h1 {
+  font-family: 'Crimson Text', Georgia, serif !important;
+}
+
+/* ── Circular avatar logo in navbar ── */
+.navbar-logo {
+  border-radius: 50% !important;
+  width: 34px !important;
+  height: 34px !important;
+  object-fit: cover !important;
+  object-position: 32% center !important;
+  margin-right: 0.45rem !important;
+  border: 2px solid var(--brand-border);
+  transition: border-color 0.2s ease;
+}
+
+.navbar-logo:hover {
+  border-color: var(--brand);
+}
+
+/* ── Navbar brand name ── */
+.navbar-brand {
+  font-family: 'Crimson Text', serif !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+}
+
+/* ── Divider below navbar ── */
+.navbar {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.18) !important;
+}
+
+/* ── Accent color for links ── */
+a:not(.nav-link):not(.navbar-brand):not(.btn):not(.quarto-category):not(.listing-category) {
+  color: var(--brand) !important;
+}
+
+a:not(.nav-link):not(.navbar-brand):not(.btn):not(.quarto-category):not(.listing-category):hover {
+  color: var(--brand-hover) !important;
+}
+
+/* ── Active / hover nav link accent ── */
+.nav-link:hover,
+.nav-link.active {
+  color: var(--brand) !important;
+}
+
+/* ── Post listing cards ── */
+.quarto-post {
+  border-radius: 0.6rem !important;
+  border: 1px solid rgba(128, 128, 128, 0.18) !important;
+  border-left: 3px solid var(--brand) !important;
+  padding: 0.25rem 0 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  overflow: hidden;
+}
+
+.quarto-post:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+.quarto-post .metadata {
+  border-top: 1px solid rgba(128, 128, 128, 0.13) !important;
+}
+
+/* ── Category / tag chips ── */
+.quarto-category,
+.listing-category {
+  border-radius: 999px !important;
+  font-size: 0.74rem !important;
+  font-weight: 500 !important;
+  padding: 0.12rem 0.55rem !important;
+  border: 1px solid var(--brand-border) !important;
+  background: var(--brand-bg) !important;
+  color: var(--brand) !important;
+  text-decoration: none !important;
+  transition: background 0.15s ease !important;
+}
+
+.quarto-category:hover,
+.listing-category:hover {
+  background: rgba(201, 144, 47, 0.18) !important;
+  color: var(--brand) !important;
+}
+
+[data-bs-theme="dark"] .quarto-category:hover,
+[data-bs-theme="dark"] .listing-category:hover {
+  background: rgba(234, 191, 109, 0.18) !important;
+}
+
+/* ── Title banner (individual post pages) ── */
+.quarto-title-banner {
+  padding-top: 3rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* ── TOC accent ── */
+#TOC a:hover,
+#TOC .active > a {
+  color: var(--brand) !important;
+}
+
+#TOC .active > a {
+  border-left: 2px solid var(--brand);
+  padding-left: 0.4rem;
+}
+
+/* ── Callout accent ── */
+.callout-note {
+  border-left-color: var(--brand) !important;
+}
+
+.callout-note > .callout-header {
+  background-color: var(--brand-bg) !important;
+  color: var(--brand) !important;
+}
+
+/* ── Footer ── */
+.nav-footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.18) !important;
+  font-size: 0.85rem;
+}
+
+/* ── About page template ── */
+.about-entity .about-links .about-link {
+  border-radius: 0.4rem;
+  border-color: var(--brand-border) !important;
+  color: var(--brand) !important;
+  transition: background 0.2s ease;
+}
+
+.about-entity .about-links .about-link:hover {
+  background: var(--brand-bg) !important;
+}
+
+/* ── Post page: title banner accent ── */
+.quarto-title-banner {
+  border-bottom: 3px solid var(--brand) !important;
+}
+
+/* ── Post page: author name style in metadata block ── */
+.quarto-title-meta-contents .author {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ── Post page: Author Bio card (injected via include-after-body) ── */
+.post-bio-divider {
+  margin: 3rem 0 0;
+  opacity: 0.15;
+}
+
+.post-author-bio {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(128, 128, 128, 0.18);
+  border-left: 3px solid var(--brand);
+  background: var(--brand-bg);
+}
+
+.post-author-bio-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 32% center;
+  flex-shrink: 0;
+  border: 2px solid var(--brand-border);
+}
+
+.post-author-bio-text {
+  flex: 1;
+}
+
+.post-author-bio-text strong {
+  display: block;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+}
+
+.post-author-bio-text p {
+  font-size: 0.875rem;
+  margin: 0 0 0.6rem;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.post-author-bio-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.post-author-bio-links a {
+  font-size: 0.82rem !important;
+  font-weight: 500;
+  color: var(--brand) !important;
+  text-decoration: none !important;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--brand-border);
+  background: transparent;
+  transition: background 0.2s ease !important;
+}
+
+.post-author-bio-links a:hover {
+  background: var(--brand-bg) !important;
+}
+
+/* ── Smooth transitions ── */
+* {
+  transition-property: none;
+}
+
+.quarto-post,
+.navbar-logo,
+a {
+  transition-property: color, background, box-shadow, transform, border-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
