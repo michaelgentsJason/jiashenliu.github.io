@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="PandaTalk8">
+<meta name="dcterms.date" content="2026-03-23">
+<meta name="description" content="结合官方文档和实战经验，总结 CLAUDE.md、提示词、Plan Mode、子 Agent、上下文管理、权限、Hooks 和 Git 工作流等 Claude Code 最佳实践。">
+
+<title>CLAUDE CODE 最佳实践：从“能用”到“真的好用” – Jiashen Liu</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-dea667461a5c81afc9ba75ce94cd63f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-6576ed406b7a02bc81cbf59141ea24d0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dea667461a5c81afc9ba75ce94cd63f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../custom.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="https://michaelgentsJason.github.io/jiashenliu.github.io/" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/avatar.jpg" alt="Jiashen Liu" class="navbar-logo light-content">
+    <img src="../../assets/avatar.jpg" alt="Jiashen Liu" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="https://michaelgentsJason.github.io/jiashenliu.github.io/">
+    <span class="navbar-title">Jiashen Liu</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/michaelgentsJason"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../assets/CV_Jiashen.pdf"> <i class="bi bi-file-earmark-pdf" role="img" aria-label="Download CV">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">CLAUDE CODE 最佳实践：从“能用”到“真的好用”</h1>
+                  <div>
+        <div class="description">
+          结合官方文档和实战经验，总结 CLAUDE.md、提示词、Plan Mode、子 Agent、上下文管理、权限、Hooks 和 Git 工作流等 Claude Code 最佳实践。
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Claude Code</div>
+                <div class="quarto-category">AI Coding</div>
+                <div class="quarto-category">Productivity</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>PandaTalk8 </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 23, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#一claude.md最被低估的功能" id="toc-一claude.md最被低估的功能" class="nav-link active" data-scroll-target="#一claude.md最被低估的功能">一、CLAUDE.MD：最被低估的功能</a>
+  <ul class="collapse">
+  <li><a href="#一个好的-claude.md-应该包含什么" id="toc-一个好的-claude.md-应该包含什么" class="nav-link" data-scroll-target="#一个好的-claude.md-应该包含什么">一个好的 CLAUDE.md 应该包含什么</a></li>
+  <li><a href="#claude.md-的四级层级" id="toc-claude.md-的四级层级" class="nav-link" data-scroll-target="#claude.md-的四级层级">CLAUDE.md 的四级层级</a></li>
+  <li><a href="#进阶用-.clauderules-组织规则" id="toc-进阶用-.clauderules-组织规则" class="nav-link" data-scroll-target="#进阶用-.clauderules-组织规则">进阶：用 <code>.claude/rules/</code> 组织规则</a></li>
+  </ul></li>
+  <li><a href="#二提示词的质量决定产出的质量" id="toc-二提示词的质量决定产出的质量" class="nav-link" data-scroll-target="#二提示词的质量决定产出的质量">二、提示词的质量决定产出的质量</a>
+  <ul class="collapse">
+  <li><a href="#差的指令-vs-好的指令" id="toc-差的指令-vs-好的指令" class="nav-link" data-scroll-target="#差的指令-vs-好的指令">差的指令 vs 好的指令</a></li>
+  <li><a href="#官方推荐的提示技巧" id="toc-官方推荐的提示技巧" class="nav-link" data-scroll-target="#官方推荐的提示技巧">官方推荐的提示技巧</a></li>
+  <li><a href="#模糊指令也有用武之地" id="toc-模糊指令也有用武之地" class="nav-link" data-scroll-target="#模糊指令也有用武之地">模糊指令也有用武之地</a></li>
+  </ul></li>
+  <li><a href="#三plan-mode先想清楚再动手" id="toc-三plan-mode先想清楚再动手" class="nav-link" data-scroll-target="#三plan-mode先想清楚再动手">三、PLAN MODE：先想清楚，再动手</a>
+  <ul class="collapse">
+  <li><a href="#怎么进入-plan-mode" id="toc-怎么进入-plan-mode" class="nav-link" data-scroll-target="#怎么进入-plan-mode">怎么进入 Plan Mode</a></li>
+  <li><a href="#plan-mode-的正确打开方式" id="toc-plan-mode-的正确打开方式" class="nav-link" data-scroll-target="#plan-mode-的正确打开方式">Plan Mode 的正确打开方式</a></li>
+  <li><a href="#推荐的复杂任务工作流" id="toc-推荐的复杂任务工作流" class="nav-link" data-scroll-target="#推荐的复杂任务工作流">推荐的复杂任务工作流</a></li>
+  <li><a href="#什么时候不需要-plan-mode" id="toc-什么时候不需要-plan-mode" class="nav-link" data-scroll-target="#什么时候不需要-plan-mode">什么时候不需要 Plan Mode</a></li>
+  </ul></li>
+  <li><a href="#四子-agentclaude-code-的分身术" id="toc-四子-agentclaude-code-的分身术" class="nav-link" data-scroll-target="#四子-agentclaude-code-的分身术">四、子 AGENT：CLAUDE CODE 的分身术</a>
+  <ul class="collapse">
+  <li><a href="#内置的子-agent-类型" id="toc-内置的子-agent-类型" class="nav-link" data-scroll-target="#内置的子-agent-类型">内置的子 Agent 类型</a></li>
+  <li><a href="#子-agent-最大的价值隔离上下文" id="toc-子-agent-最大的价值隔离上下文" class="nav-link" data-scroll-target="#子-agent-最大的价值隔离上下文">子 Agent 最大的价值：隔离上下文</a></li>
+  <li><a href="#后台运行ctrlb" id="toc-后台运行ctrlb" class="nav-link" data-scroll-target="#后台运行ctrlb">后台运行：<code>Ctrl+B</code></a></li>
+  <li><a href="#自定义子-agent" id="toc-自定义子-agent" class="nav-link" data-scroll-target="#自定义子-agent">自定义子 Agent</a></li>
+  </ul></li>
+  <li><a href="#五上下文管理最容易被忽视的关键" id="toc-五上下文管理最容易被忽视的关键" class="nav-link" data-scroll-target="#五上下文管理最容易被忽视的关键">五、上下文管理：最容易被忽视的关键</a>
+  <ul class="collapse">
+  <li><a href="#上下文里都装了什么" id="toc-上下文里都装了什么" class="nav-link" data-scroll-target="#上下文里都装了什么">上下文里都装了什么</a></li>
+  <li><a href="#五个实用策略" id="toc-五个实用策略" class="nav-link" data-scroll-target="#五个实用策略">五个实用策略</a></li>
+  <li><a href="#memory-vs-claude.md" id="toc-memory-vs-claude.md" class="nav-link" data-scroll-target="#memory-vs-claude.md">Memory vs CLAUDE.md</a></li>
+  </ul></li>
+  <li><a href="#六权限管理安全和效率的平衡" id="toc-六权限管理安全和效率的平衡" class="nav-link" data-scroll-target="#六权限管理安全和效率的平衡">六、权限管理：安全和效率的平衡</a>
+  <ul class="collapse">
+  <li><a href="#权限规则配置" id="toc-权限规则配置" class="nav-link" data-scroll-target="#权限规则配置">权限规则配置</a></li>
+  <li><a href="#设置文件的层级" id="toc-设置文件的层级" class="nav-link" data-scroll-target="#设置文件的层级">设置文件的层级</a></li>
+  </ul></li>
+  <li><a href="#七hooks让规则变成铁律" id="toc-七hooks让规则变成铁律" class="nav-link" data-scroll-target="#七hooks让规则变成铁律">七、HOOKS：让规则变成铁律</a>
+  <ul class="collapse">
+  <li><a href="#实用示例" id="toc-实用示例" class="nav-link" data-scroll-target="#实用示例">实用示例</a></li>
+  <li><a href="#hook-的四种类型" id="toc-hook-的四种类型" class="nav-link" data-scroll-target="#hook-的四种类型">Hook 的四种类型</a></li>
+  </ul></li>
+  <li><a href="#八git-工作流用好-worktree" id="toc-八git-工作流用好-worktree" class="nav-link" data-scroll-target="#八git-工作流用好-worktree">八、GIT 工作流：用好 WORKTREE</a>
+  <ul class="collapse">
+  <li><a href="#git-worktree隔离的工作空间" id="toc-git-worktree隔离的工作空间" class="nav-link" data-scroll-target="#git-worktree隔离的工作空间">Git Worktree：隔离的工作空间</a></li>
+  <li><a href="#几个-git-铁律" id="toc-几个-git-铁律" class="nav-link" data-scroll-target="#几个-git-铁律">几个 Git 铁律</a></li>
+  </ul></li>
+  <li><a href="#九快捷键和命令速查" id="toc-九快捷键和命令速查" class="nav-link" data-scroll-target="#九快捷键和命令速查">九、快捷键和命令速查</a>
+  <ul class="collapse">
+  <li><a href="#最常用的斜杠命令" id="toc-最常用的斜杠命令" class="nav-link" data-scroll-target="#最常用的斜杠命令">最常用的斜杠命令</a></li>
+  </ul></li>
+  <li><a href="#十extended-thinking让-claude-想深一点" id="toc-十extended-thinking让-claude-想深一点" class="nav-link" data-scroll-target="#十extended-thinking让-claude-想深一点">十、EXTENDED THINKING：让 CLAUDE 想深一点</a>
+  <ul class="collapse">
+  <li><a href="#怎么用" id="toc-怎么用" class="nav-link" data-scroll-target="#怎么用">怎么用</a></li>
+  <li><a href="#什么时候该用" id="toc-什么时候该用" class="nav-link" data-scroll-target="#什么时候该用">什么时候该用</a></li>
+  <li><a href="#什么时候不需要" id="toc-什么时候不需要" class="nav-link" data-scroll-target="#什么时候不需要">什么时候不需要</a></li>
+  </ul></li>
+  <li><a href="#十一mcp-server让-claude-连接外部世界" id="toc-十一mcp-server让-claude-连接外部世界" class="nav-link" data-scroll-target="#十一mcp-server让-claude-连接外部世界">十一、MCP SERVER：让 CLAUDE 连接外部世界</a>
+  <ul class="collapse">
+  <li><a href="#快速添加" id="toc-快速添加" class="nav-link" data-scroll-target="#快速添加">快速添加</a></li>
+  <li><a href="#配置文件" id="toc-配置文件" class="nav-link" data-scroll-target="#配置文件">配置文件</a></li>
+  <li><a href="#注意上下文开销" id="toc-注意上下文开销" class="nav-link" data-scroll-target="#注意上下文开销">注意上下文开销</a></li>
+  </ul></li>
+  <li><a href="#十二ide-集成不只是终端" id="toc-十二ide-集成不只是终端" class="nav-link" data-scroll-target="#十二ide-集成不只是终端">十二、IDE 集成：不只是终端</a>
+  <ul class="collapse">
+  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code">VS Code</a></li>
+  <li><a href="#jetbrains" id="toc-jetbrains" class="nav-link" data-scroll-target="#jetbrains">JetBrains</a></li>
+  </ul></li>
+  <li><a href="#十三审查代码信任但要验证" id="toc-十三审查代码信任但要验证" class="nav-link" data-scroll-target="#十三审查代码信任但要验证">十三、审查代码：信任但要验证</a>
+  <ul class="collapse">
+  <li><a href="#几个常见问题" id="toc-几个常见问题" class="nav-link" data-scroll-target="#几个常见问题">几个常见问题</a></li>
+  <li><a href="#writerreviewer-模式" id="toc-writerreviewer-模式" class="nav-link" data-scroll-target="#writerreviewer-模式">Writer/Reviewer 模式</a></li>
+  </ul></li>
+  <li><a href="#十四不要用-claude-code-做的事" id="toc-十四不要用-claude-code-做的事" class="nav-link" data-scroll-target="#十四不要用-claude-code-做的事">十四、不要用 CLAUDE CODE 做的事</a>
+  <ul class="collapse">
+  <li><a href="#不要让它做你完全不了解的事" id="toc-不要让它做你完全不了解的事" class="nav-link" data-scroll-target="#不要让它做你完全不了解的事">1. 不要让它做你完全不了解的事</a></li>
+  <li><a href="#不要在没有版本控制的环境下用" id="toc-不要在没有版本控制的环境下用" class="nav-link" data-scroll-target="#不要在没有版本控制的环境下用">2. 不要在没有版本控制的环境下用</a></li>
+  <li><a href="#不要一口气扔一个巨大的任务" id="toc-不要一口气扔一个巨大的任务" class="nav-link" data-scroll-target="#不要一口气扔一个巨大的任务">3. 不要一口气扔一个巨大的任务</a></li>
+  <li><a href="#不要指望一次就完美" id="toc-不要指望一次就完美" class="nav-link" data-scroll-target="#不要指望一次就完美">4. 不要指望一次就完美</a></li>
+  </ul></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结">总结</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<p>原文来源：<a href="https://x.com/PandaTalk8/article/2035975664730575325">x.com/PandaTalk8/article/2035975664730575325</a></p>
+<p>我用 Claude Code 大半年了，踩过的坑比写过的代码还多。</p>
+<p>一开始我以为 Claude Code 就是一个“更高级的 Copilot” 在终端里打字，它帮我写代码，完事。后来才发现，这东西的上限远比我想象得高，但前提是你得知道怎么用。</p>
+<p>这篇文章结合官方文档和实战经验，整理了我认为最重要的使用技巧。有些是血泪教训，有些是读文档才知道的隐藏功能。</p>
+<section id="一claude.md最被低估的功能" class="level2">
+<h2 class="anchored" data-anchor-id="一claude.md最被低估的功能">一、CLAUDE.MD：最被低估的功能</h2>
+<p>如果你只记住这篇文章的一件事，就记这个：写好你的 <code>CLAUDE.md</code>。</p>
+<p><code>CLAUDE.md</code> 是 Claude Code 在每次对话开始时自动读取的指令文件。它就像你给一个新同事写的 onboarding doc，你希望他知道什么，你就写什么。</p>
+<p>很多人不写 <code>CLAUDE.md</code>，或者随便写两行。结果就是每次对话都要从头解释项目结构、编码规范、技术栈选择。这就像每天早上都要重新给同事介绍一遍公司。</p>
+<section id="一个好的-claude.md-应该包含什么" class="level3">
+<h3 class="anchored" data-anchor-id="一个好的-claude.md-应该包含什么">一个好的 CLAUDE.md 应该包含什么</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 项目名称</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 构建和测试命令</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>安装依赖：npm install</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>运行测试：npm test</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>单个测试：npm test -- --grep "test name"</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>格式化：npm run format</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## 编码规范</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Python 使用 ruff 格式化，行宽 88</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>测试用 pytest，每个 service 对应一个测试文件</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>API 路由文件名用复数：users.py, orders.py</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>提交信息用英文，格式：type(scope): description</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 架构决策</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>选 Tailwind 而不是 CSS Modules，因为团队统一了这个规范</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>用户权限校验在 middleware 里做，不要在每个路由重复写</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Redis 缓存的 key 前缀统一用 <span class="in">`app:v1:`</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## 常见陷阱</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据库连接池上限是 20，别在循环里开新连接</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>不要 mock 数据库，上次 mock 测试通过但生产迁移失败了</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>有几个关键原则：</p>
+<ul>
+<li>第一，写 Claude 从代码里读不出来的东西。项目的“为什么”比“是什么”更重要。你不需要解释 React 怎么用，但你需要告诉它“我们选 Tailwind 是因为团队统一了这个规范”。</li>
+<li>第二，控制在 200 行以内。官方文档明确提到，<code>CLAUDE.md</code> 太长会导致 Claude 忽略规则。用 markdown 标题和列表，保持可扫描性。</li>
+<li>第三，不要放频繁变化的内容。详细的 API 文档、逐文件描述这些东西不适合放在 <code>CLAUDE.md</code> 里。放链接就好。</li>
+</ul>
+</section>
+<section id="claude.md-的四级层级" class="level3">
+<h3 class="anchored" data-anchor-id="claude.md-的四级层级">CLAUDE.md 的四级层级</h3>
+<p>Claude Code 支持四级 <code>CLAUDE.md</code>，按优先级从高到低：</p>
+<p>我的全局 <code>CLAUDE.md</code> 里通常会写：</p>
+<ul>
+<li>我是一名全栈工程师，不需要过度解释基础概念</li>
+<li>回复尽量简洁，不要加无关的客套话</li>
+<li>代码改动后不要总结你做了什么，我会看 diff</li>
+<li>优先用简单方案，不要过度工程</li>
+</ul>
+<p>这四行，能省掉你几百次重复纠正的时间。</p>
+</section>
+<section id="进阶用-.clauderules-组织规则" class="level3">
+<h3 class="anchored" data-anchor-id="进阶用-.clauderules-组织规则">进阶：用 <code>.claude/rules/</code> 组织规则</h3>
+<p>当项目大了之后，一个 <code>CLAUDE.md</code> 文件塞不下所有规则。官方提供了一个更优雅的方案：把规则拆到 <code>.claude/rules/</code> 目录下。</p>
+<pre class="text"><code>.claude/rules/
+├── testing.md        # 测试规范
+├── api-style.md      # API 编写风格
+└── frontend.md       # 前端约定</code></pre>
+<p>更强大的是，你可以用 YAML frontmatter 把规则限定到特定文件：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"src/api/**/*.ts"</span><span class="kw">,</span><span class="at"> </span><span class="st">"src/routes/**/*.ts"</span><span class="kw">]</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">API 路由必须包含输入验证和错误处理。</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">所有新端点需要在 tests/api/ 下添加集成测试。</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>这样这条规则只在 Claude 访问匹配的文件时才会加载，节省上下文空间。</p>
+</section>
+</section>
+<section id="二提示词的质量决定产出的质量" class="level2">
+<h2 class="anchored" data-anchor-id="二提示词的质量决定产出的质量">二、提示词的质量决定产出的质量</h2>
+<p>这听起来像废话，但我见过太多人这样用 Claude Code：</p>
+<p>“帮我写一个登录功能”</p>
+<p>然后对着生成的一大坨代码发愁，这不是我想要的啊。</p>
+<p>好的指令应该包含三个要素：目标、约束、上下文。</p>
+<section id="差的指令-vs-好的指令" class="level3">
+<h3 class="anchored" data-anchor-id="差的指令-vs-好的指令">差的指令 vs 好的指令</h3>
+<p>差：“给用户列表加个搜索功能”</p>
+<p>好：“在 <code>@src/pages/UserList.tsx</code> 的表格上方加一个搜索框。搜索走后端 API <code>/api/users?search=xxx</code>，不要前端过滤。用 debounce 300ms，样式和现有的 Filter 组件保持一致。”</p>
+<p>区别在哪？好的指令减少了歧义。Claude Code 不需要猜你要前端搜索还是后端搜索，不需要猜 debounce 时间，不需要猜样式规范。</p>
+</section>
+<section id="官方推荐的提示技巧" class="level3">
+<h3 class="anchored" data-anchor-id="官方推荐的提示技巧">官方推荐的提示技巧</h3>
+<section id="用-引用具体文件" class="level4">
+<h4 class="anchored" data-anchor-id="用-引用具体文件">1. 用 <code>@</code> 引用具体文件</h4>
+<p>Claude Code 支持用 <code>@文件路径</code> 直接把文件内容拉进上下文。比起说“那个认证相关的代码”，直接写 <code>@src/auth/login.ts</code> 精确得多。你甚至可以指定行号范围：<code>@src/auth/login.ts#5-30</code>。</p>
+</section>
+<section id="贴截图和图片" class="level4">
+<h4 class="anchored" data-anchor-id="贴截图和图片">2. 贴截图和图片</h4>
+<p>用 <code>Ctrl+V</code> 可以直接粘贴图片。调试 UI 问题时，贴一张“现在长这样”和“我想要这样”的截图，比文字描述有效十倍。</p>
+</section>
+<section id="给验证标准" class="level4">
+<h4 class="anchored" data-anchor-id="给验证标准">3. 给验证标准</h4>
+<p>不要只说“帮我修这个 bug”，而是：</p>
+<p>“修复登录超时后无法重新认证的问题。修复后，用户在 token 过期后点击任意按钮应该自动跳转到登录页。测试用例在 <code>@tests/auth.test.ts</code> 里，修完后跑一下确认通过。”</p>
+<p>给 Claude 一个可以自我验证的标准，测试用例、截图、预期输出，它就能自己检查工作质量，减少来回修改。</p>
+</section>
+<section id="明确不要做的事" class="level4">
+<h4 class="anchored" data-anchor-id="明确不要做的事">4. 明确“不要做”的事</h4>
+<p>Claude Code 有时候会过度热心，你让它修一个 bug，它顺手把周围的代码也重构了。明确说“只改这个函数，不要动其他代码”，能省很多事。</p>
+</section>
+</section>
+<section id="模糊指令也有用武之地" class="level3">
+<h3 class="anchored" data-anchor-id="模糊指令也有用武之地">模糊指令也有用武之地</h3>
+<p>并不是所有时候都需要精确的指令。探索性任务用模糊指令反而更好：</p>
+<ul>
+<li>“这个文件有什么可以改进的地方？”</li>
+<li>“帮我理解一下这个模块的架构”</li>
+<li>“这段代码有什么潜在问题？”</li>
+</ul>
+<p>但到了实现阶段，切回精确模式。</p>
+</section>
+</section>
+<section id="三plan-mode先想清楚再动手" class="level2">
+<h2 class="anchored" data-anchor-id="三plan-mode先想清楚再动手">三、PLAN MODE：先想清楚，再动手</h2>
+<p>Claude Code 有一个 Plan Mode，这是我认为最被低估的工作流。</p>
+<section id="怎么进入-plan-mode" class="level3">
+<h3 class="anchored" data-anchor-id="怎么进入-plan-mode">怎么进入 Plan Mode</h3>
+<p>三种方式：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动时直接进入</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--permission-mode</span> plan</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code># 对话中切换（按两次 Shift+Tab）
+Shift+Tab Shift+Tab</code></pre>
+<pre class="text"><code># 在提示词里说
+先不要改代码，帮我做个计划</code></pre>
+<p>在 Plan Mode 下，Claude Code 只能读取文件、搜索代码，不能做任何修改。它会探索代码库，分析你的需求，然后给出一个详细的实现计划。</p>
+</section>
+<section id="plan-mode-的正确打开方式" class="level3">
+<h3 class="anchored" data-anchor-id="plan-mode-的正确打开方式">Plan Mode 的正确打开方式</h3>
+<p>关键操作：按 <code>Ctrl+G</code> 可以在你的编辑器里打开并编辑计划。</p>
+<p>这意味着你可以：</p>
+<ol type="1">
+<li>让 Claude 生成初始计划</li>
+<li><code>Ctrl+G</code> 打开计划，删掉你不同意的部分，补充你自己的想法</li>
+<li>切回正常模式（<code>Shift+Tab</code>），让 Claude 按修改后的计划执行</li>
+</ol>
+<p>改一个计划只需要一句话，改已经写好的代码要花十倍的时间。</p>
+</section>
+<section id="推荐的复杂任务工作流" class="level3">
+<h3 class="anchored" data-anchor-id="推荐的复杂任务工作流">推荐的复杂任务工作流</h3>
+<p>官方推荐的标准流程是四步：探索 → 规划 → 实现 → 验证。</p>
+<ol type="1">
+<li>进入 Plan Mode</li>
+<li>让 Claude 阅读相关代码：“读一下 <code>src/auth/</code> 下的代码，理解 session 处理逻辑”</li>
+<li>请求计划：“制定一个 OAuth2 迁移方案”</li>
+<li><code>Ctrl+G</code> 审查和编辑计划</li>
+<li>切回正常模式</li>
+<li>“按照计划实现，写完跑测试”</li>
+<li>让 Claude 对照需求自查</li>
+</ol>
+</section>
+<section id="什么时候不需要-plan-mode" class="level3">
+<h3 class="anchored" data-anchor-id="什么时候不需要-plan-mode">什么时候不需要 Plan Mode</h3>
+<ul>
+<li>改一个变量名</li>
+<li>修一个明显的 typo</li>
+<li>加一行日志</li>
+</ul>
+<p>判断标准很简单：如果这个任务的实现方式只有一种，直接做。如果有多种选择，先规划。</p>
+</section>
+</section>
+<section id="四子-agentclaude-code-的分身术" class="level2">
+<h2 class="anchored" data-anchor-id="四子-agentclaude-code-的分身术">四、子 AGENT：CLAUDE CODE 的分身术</h2>
+<p>子 Agent 是 Claude Code 的一个强大机制，它可以启动独立的 AI 进程来并行处理任务，每个子 Agent 有自己的上下文窗口，不会污染你的主对话。</p>
+<section id="内置的子-agent-类型" class="level3">
+<h3 class="anchored" data-anchor-id="内置的子-agent-类型">内置的子 Agent 类型</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>能力</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Explore</td>
+<td>只读，快速搜索代码库</td>
+<td>探索、找文件、找定义</td>
+</tr>
+<tr class="even">
+<td>Plan</td>
+<td>只读，研究分析</td>
+<td>Plan Mode 下的代码分析</td>
+</tr>
+<tr class="odd">
+<td>General</td>
+<td>完整能力</td>
+<td>复杂的多步骤任务</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="子-agent-最大的价值隔离上下文" class="level3">
+<h3 class="anchored" data-anchor-id="子-agent-最大的价值隔离上下文">子 Agent 最大的价值：隔离上下文</h3>
+<p>当你让 Claude 跑测试、分析日志、搜索大量文件时，这些操作会产生海量输出，塞满你的上下文窗口。用子 Agent 来做这些事，输出留在子 Agent 的上下文里，只有摘要返回给你。</p>
+<p>比如：</p>
+<ul>
+<li>“用子 Agent 跑一下全量测试，把失败的用例列出来”</li>
+<li>“用子 Agent 搜索所有使用了 deprecated API 的文件”</li>
+</ul>
+</section>
+<section id="后台运行ctrlb" class="level3">
+<h3 class="anchored" data-anchor-id="后台运行ctrlb">后台运行：<code>Ctrl+B</code></h3>
+<p>按 <code>Ctrl+B</code> 可以把子 Agent 放到后台运行。你可以继续和 Claude 聊其他事，等后台任务完成后会自动通知你。</p>
+<p>适合：</p>
+<ul>
+<li>跑测试套件（通常需要几分钟）</li>
+<li>大范围代码搜索</li>
+<li>不紧急的代码审查</li>
+</ul>
+</section>
+<section id="自定义子-agent" class="level3">
+<h3 class="anchored" data-anchor-id="自定义子-agent">自定义子 Agent</h3>
+<p>你可以在 <code>.claude/agents/</code> 目录下创建自定义 Agent：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> code-reviewer</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> 代码审查专家。代码改动后自动触发。</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tools</span><span class="kw">:</span><span class="at"> Read, Grep, Glob, Bash</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> sonnet</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">你是一位资深代码审查者。检查以下维度：</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 代码清晰度和可读性</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 错误处理是否完整</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 有没有暴露敏感信息</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 输入验证</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> 性能隐患</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>然后在对话中用 <code>@"code-reviewer (agent)"</code> 调用它。</p>
+</section>
+</section>
+<section id="五上下文管理最容易被忽视的关键" class="level2">
+<h2 class="anchored" data-anchor-id="五上下文管理最容易被忽视的关键">五、上下文管理：最容易被忽视的关键</h2>
+<p>Claude Code 的上下文窗口虽然大（最多 1M token），但它不是无限的，而且上下文管理直接决定了输出质量。</p>
+<section id="上下文里都装了什么" class="level3">
+<h3 class="anchored" data-anchor-id="上下文里都装了什么">上下文里都装了什么</h3>
+<ul>
+<li>你的对话历史</li>
+<li>Claude 读取的所有文件内容</li>
+<li>命令执行的输出</li>
+<li><code>CLAUDE.md</code> 文件（每次都加载）</li>
+<li>Memory 文件（前 200 行）</li>
+<li>加载的 Skill 和 MCP 工具定义</li>
+</ul>
+</section>
+<section id="五个实用策略" class="level3">
+<h3 class="anchored" data-anchor-id="五个实用策略">五个实用策略</h3>
+<section id="clear一件事做完就清" class="level4">
+<h4 class="anchored" data-anchor-id="clear一件事做完就清">1. <code>/clear</code>：一件事做完就清</h4>
+<p>不要在同一个对话里又修 bug 又加功能又重构。<code>/clear</code> 会清空上下文但保留 <code>CLAUDE.md</code>，相当于一次免费的重启。</p>
+</section>
+<section id="compact手动压缩上下文" class="level4">
+<h4 class="anchored" data-anchor-id="compact手动压缩上下文">2. <code>/compact</code>：手动压缩上下文</h4>
+<p>当对话变长时，输入 <code>/compact</code> 让 Claude 自动总结和压缩之前的对话。更好的用法是给压缩加一个焦点：</p>
+<pre class="text"><code>/compact 专注于 API 改动和测试结果</code></pre>
+<p>这样 Claude 在压缩时会优先保留你关心的内容。</p>
+</section>
+<section id="context看看上下文被谁吃了" class="level4">
+<h4 class="anchored" data-anchor-id="context看看上下文被谁吃了">3. <code>/context</code>：看看上下文被谁吃了</h4>
+<p>输入 <code>/context</code> 可以看到当前上下文的使用情况，哪些文件占了多少 token，MCP 工具定义占了多少。我经常发现一些没用的 MCP server 占了大量空间。</p>
+</section>
+<section id="用子-agent-隔离噪声" class="level4">
+<h4 class="anchored" data-anchor-id="用子-agent-隔离噪声">4. 用子 Agent 隔离噪声</h4>
+<p>跑测试、分析日志这些操作会产生大量输出。让子 Agent 去做，主对话的上下文保持干净。</p>
+</section>
+<section id="在-claude.md-里写压缩保留指令" class="level4">
+<h4 class="anchored" data-anchor-id="在-claude.md-里写压缩保留指令">5. 在 <code>CLAUDE.md</code> 里写压缩保留指令</h4>
+<p>你可以告诉 Claude 压缩时必须保留什么：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 压缩指令</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>压缩上下文时，始终保留：</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>已修改文件的完整列表</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>测试命令和结果</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>关键的架构决策</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="memory-vs-claude.md" class="level3">
+<h3 class="anchored" data-anchor-id="memory-vs-claude.md">Memory vs CLAUDE.md</h3>
+<p>Memory 适合存什么：你的偏好（“这个人喜欢简洁回复”）、项目约定（“部署有个特殊步骤”）、历史决策（“上次选了方案 A 是因为 X”）。</p>
+<p>Memory 不适合存什么：代码细节、Git 历史、临时状态，这些从代码和 Git 里获取更准确。</p>
+<p>用 <code>/memory</code> 命令可以查看和管理所有已加载的 Memory。</p>
+</section>
+</section>
+<section id="六权限管理安全和效率的平衡" class="level2">
+<h2 class="anchored" data-anchor-id="六权限管理安全和效率的平衡">六、权限管理：安全和效率的平衡</h2>
+<p>Claude Code 提供了五种权限模式，用 <code>Shift+Tab</code> 在对话中循环切换。</p>
+<section id="权限规则配置" class="level3">
+<h3 class="anchored" data-anchor-id="权限规则配置">权限规则配置</h3>
+<p>在 <code>.claude/settings.json</code> 里，你可以精细控制每种工具的权限：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"permissions"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"allow"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Bash(npm run *)"</span><span class="ot">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Bash(git commit *)"</span><span class="ot">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Edit(src/**/*.ts)"</span><span class="ot">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Read(*.md)"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"deny"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Bash(rm -rf *)"</span><span class="ot">,</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Edit(.env)"</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>规则优先级：<code>deny</code> → <code>ask</code> → <code>allow</code>（<code>deny</code> 最优先）。</p>
+<p>这意味着你可以大胆地 allow 常用命令，同时用 deny 保护敏感文件。比如 <code>.env</code> 文件，无论如何都不应该被编辑。</p>
+</section>
+<section id="设置文件的层级" class="level3">
+<h3 class="anchored" data-anchor-id="设置文件的层级">设置文件的层级</h3>
+<p>和 <code>CLAUDE.md</code> 类似，settings 也有多级：</p>
+<pre class="text"><code>组织策略（最高优先级）
+  ↓
+CLI 参数
+  ↓
+.claude/settings.local.json（本地，不提交到 Git）
+  ↓
+.claude/settings.json（项目级，团队共享）
+  ↓
+~/.claude/settings.json（全局，个人）
+  ↓
+默认值（最低优先级）</code></pre>
+<p>我的建议：把团队共享的规则放 <code>.claude/settings.json</code>，个人偏好放 <code>~/.claude/settings.json</code>，敏感配置放 <code>.claude/settings.local.json</code>（记得加到 <code>.gitignore</code>）。</p>
+</section>
+</section>
+<section id="七hooks让规则变成铁律" class="level2">
+<h2 class="anchored" data-anchor-id="七hooks让规则变成铁律">七、HOOKS：让规则变成铁律</h2>
+<p><code>CLAUDE.md</code> 里的指令是“建议”，Claude 大部分时候会遵守，但偶尔会忘。Hooks 是“铁律”，无论如何都会执行。</p>
+<p>Hooks 是在特定生命周期事件上自动触发的 shell 命令。配置在 <code>settings.json</code> 里。</p>
+<section id="实用示例" class="level3">
+<h3 class="anchored" data-anchor-id="实用示例">实用示例</h3>
+<p>自动格式化，每次编辑后运行 Prettier：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"hooks"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"PostToolUse"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"matcher"</span><span class="fu">:</span> <span class="st">"Edit|Write"</span><span class="fu">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"hooks"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"command"</span><span class="fu">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"command"</span><span class="fu">:</span> <span class="st">"jq -r '.tool_input.file_path' | xargs npx prettier --write"</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>保护关键文件，阻止修改生产配置：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"hooks"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"PreToolUse"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"matcher"</span><span class="fu">:</span> <span class="st">"Edit|Write"</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"hooks"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"command"</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"command"</span><span class="fu">:</span> <span class="st">".claude/hooks/protect-files.sh"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hook 命令返回 <code>exit code 0</code> 表示允许，返回 <code>exit code 2</code> 表示阻止。这意味着你可以写任意复杂的判断逻辑。</p>
+<p>上下文压缩后重新注入关键信息：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"hooks"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"SessionStart"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"matcher"</span><span class="fu">:</span> <span class="st">"compact"</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"hooks"</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"command"</span><span class="fu">,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"command"</span><span class="fu">:</span> <span class="st">"echo '用 Bun 不用 npm。提交前跑 bun test。'"</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>这解决了一个常见痛点：对话太长被压缩后，之前提过的重要指令可能丢失。用 Hook 可以在每次压缩后自动重新注入。</p>
+</section>
+<section id="hook-的四种类型" class="level3">
+<h3 class="anchored" data-anchor-id="hook-的四种类型">Hook 的四种类型</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>command</code></td>
+<td>执行 shell 命令，从 stdin 读取 JSON</td>
+</tr>
+<tr class="even">
+<td><code>http</code></td>
+<td>向 URL 发送 POST 请求</td>
+</tr>
+<tr class="odd">
+<td><code>prompt</code></td>
+<td>单次 LLM 调用，做 yes/no 判断</td>
+</tr>
+<tr class="even">
+<td><code>agent</code></td>
+<td>启动一个子 Agent 进行验证</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="八git-工作流用好-worktree" class="level2">
+<h2 class="anchored" data-anchor-id="八git-工作流用好-worktree">八、GIT 工作流：用好 WORKTREE</h2>
+<p>Claude Code 能执行 Git 命令，这是一把双刃剑。但官方提供了一个很好的安全网：Worktree。</p>
+<section id="git-worktree隔离的工作空间" class="level3">
+<h3 class="anchored" data-anchor-id="git-worktree隔离的工作空间">Git Worktree：隔离的工作空间</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在隔离的 worktree 中启动 Claude</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--worktree</span> feature-auth</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--worktree</span> bugfix-123</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 自动生成名字</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--worktree</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Worktree 会在 <code>.claude/worktrees/</code> 下创建一个独立的 Git 分支副本。Claude 在里面怎么折腾都不影响你的主分支。退出时：</p>
+<ul>
+<li>如果没有改动，自动清理</li>
+<li>如果有改动，提示你保留或删除</li>
+</ul>
+<p>这对于探索性任务特别有用。不确定某个重构方案能不能行？开个 worktree 试试，不行就扔掉，零风险。</p>
+</section>
+<section id="几个-git-铁律" class="level3">
+<h3 class="anchored" data-anchor-id="几个-git-铁律">几个 Git 铁律</h3>
+<section id="永远不要让-claude-code-自动-push" class="level4">
+<h4 class="anchored" data-anchor-id="永远不要让-claude-code-自动-push">1. 永远不要让 Claude Code 自动 push</h4>
+<p>它可以 commit，但 push 这个动作应该由你来确认。一旦 push 到远端，回退成本就大了。</p>
+</section>
+<section id="频繁-commit" class="level4">
+<h4 class="anchored" data-anchor-id="频繁-commit">2. 频繁 commit</h4>
+<p>做完一个小功能就 commit。用 <code>/rewind</code> 可以回退到任意一个 checkpoint，但前提是你有 commit 记录。</p>
+</section>
+<section id="警惕破坏性操作" class="level4">
+<h4 class="anchored" data-anchor-id="警惕破坏性操作">3. 警惕破坏性操作</h4>
+<p>如果 Claude Code 要执行 <code>git reset --hard</code>、<code>git push --force</code>、<code>rm -rf</code>，一定要在脑子里过一遍后果再批准。这些操作没有 undo。你也可以在权限规则里直接 deny 掉这些命令。</p>
+</section>
+<section id="从-pr-恢复上下文" class="level4">
+<h4 class="anchored" data-anchor-id="从-pr-恢复上下文">4. 从 PR 恢复上下文</h4>
+<p>这会自动加载 PR 的改动和讨论作为上下文，非常适合 code review 或者继续别人的工作。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--from-pr</span> 123</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+</section>
+<section id="九快捷键和命令速查" class="level2">
+<h2 class="anchored" data-anchor-id="九快捷键和命令速查">九、快捷键和命令速查</h2>
+<p>这些快捷键我每天都在用，强烈建议记住。</p>
+<section id="最常用的斜杠命令" class="level3">
+<h3 class="anchored" data-anchor-id="最常用的斜杠命令">最常用的斜杠命令</h3>
+<ul>
+<li><code>/compact [焦点]</code>：压缩上下文，可指定保留重点</li>
+<li><code>/clear</code>：清空对话，重新开始</li>
+<li><code>/context</code>：查看上下文使用情况</li>
+<li><code>/memory</code>：查看和管理 Memory</li>
+<li><code>/rewind</code>：回退到某个 checkpoint</li>
+<li><code>/resume [名称]</code>：恢复之前的对话</li>
+<li><code>/model</code>：切换模型</li>
+<li><code>/effort [级别]</code>：设置推理深度：<code>low</code> / <code>medium</code> / <code>high</code> / <code>max</code></li>
+<li><code>/init</code>：自动生成 <code>CLAUDE.md</code></li>
+<li><code>/mcp</code>：管理 MCP 服务器</li>
+<li><code>/permissions</code>：查看权限规则</li>
+<li><code>/cost</code>：查看 token 消耗</li>
+</ul>
+<p><code>/init</code> 对新项目特别有用，它会自动分析你的代码库，帮你生成一个 <code>CLAUDE.md</code> 的初稿。虽然通常需要手动调整，但比从零开始快得多。</p>
+</section>
+</section>
+<section id="十extended-thinking让-claude-想深一点" class="level2">
+<h2 class="anchored" data-anchor-id="十extended-thinking让-claude-想深一点">十、EXTENDED THINKING：让 CLAUDE 想深一点</h2>
+<p>对于复杂问题，你可以开启 Extended Thinking 模式，让 Claude 在回答前花更多时间推理。</p>
+<section id="怎么用" class="level3">
+<h3 class="anchored" data-anchor-id="怎么用">怎么用</h3>
+<pre class="text"><code># 快捷键切换
+Option+T (Mac) / Alt+T (Windows/Linux)</code></pre>
+<pre class="text"><code># 或者用命令
+/effort high    # 更深入的推理
+/effort max     # 最大推理深度
+/effort low     # 简单任务，省 token</code></pre>
+</section>
+<section id="什么时候该用" class="level3">
+<h3 class="anchored" data-anchor-id="什么时候该用">什么时候该用</h3>
+<ul>
+<li>复杂的架构决策</li>
+<li>棘手的 debug（多个可能原因需要排除）</li>
+<li>多步骤的重构方案设计</li>
+<li>权衡多个方案的利弊</li>
+</ul>
+</section>
+<section id="什么时候不需要" class="level3">
+<h3 class="anchored" data-anchor-id="什么时候不需要">什么时候不需要</h3>
+<ul>
+<li>简单的代码修改</li>
+<li>格式化、重命名</li>
+<li>已经很明确的 bug 修复</li>
+</ul>
+<p>小技巧：在提示词里写 <code>ultrathink</code> 可以强制触发最高推理深度，不需要手动调整 effort 设置。</p>
+</section>
+</section>
+<section id="十一mcp-server让-claude-连接外部世界" class="level2">
+<h2 class="anchored" data-anchor-id="十一mcp-server让-claude-连接外部世界">十一、MCP SERVER：让 CLAUDE 连接外部世界</h2>
+<p>MCP（Model Context Protocol）让 Claude Code 能和外部工具通信，GitHub、数据库、Slack、Notion 等等。</p>
+<section id="快速添加" class="level3">
+<h3 class="anchored" data-anchor-id="快速添加">快速添加</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> mcp add github <span class="at">--</span> npx @anthropic-ai/mcp-server-github</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> mcp add postgres <span class="at">--</span> npx @anthropic-ai/mcp-server-postgres postgresql://localhost:5432/mydb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="配置文件" class="level3">
+<h3 class="anchored" data-anchor-id="配置文件">配置文件</h3>
+<p>MCP 配置在 <code>.mcp.json</code> 里：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"mcpServers"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"github"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"stdio"</span><span class="fu">,</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"command"</span><span class="fu">:</span> <span class="st">"npx"</span><span class="fu">,</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"args"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"@modelcontextprotocol/server-github"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"env"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"GITHUB_TOKEN"</span><span class="fu">:</span> <span class="st">"$GITHUB_TOKEN"</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="注意上下文开销" class="level3">
+<h3 class="anchored" data-anchor-id="注意上下文开销">注意上下文开销</h3>
+<p>每个 MCP server 会额外消耗 100-500+ token 的工具定义。用 <code>/mcp</code> 命令可以查看每个 server 的开销，禁用不用的 server。</p>
+<p>我的经验：不要贪多。常用的 2-3 个 MCP server 就够了。装太多，上下文空间被工具定义吃掉，反而影响代码分析的质量。</p>
+</section>
+</section>
+<section id="十二ide-集成不只是终端" class="level2">
+<h2 class="anchored" data-anchor-id="十二ide-集成不只是终端">十二、IDE 集成：不只是终端</h2>
+<section id="vs-code" class="level3">
+<h3 class="anchored" data-anchor-id="vs-code">VS Code</h3>
+<p>安装 Claude Code 扩展后，你可以在 VS Code 里直接使用 Claude，而不需要切到终端。</p>
+<p>几个好用的功能：</p>
+<ul>
+<li>并排 diff 视图：Claude 的改动以 diff 形式显示，一目了然</li>
+<li><code>Option+K</code> / <code>Alt+K</code>：快速插入当前文件的 <code>@</code> 引用</li>
+<li>多标签对话：在不同的标签页里开多个独立对话</li>
+<li><code>Cmd+Shift+Esc</code>：快速打开新的对话标签</li>
+</ul>
+</section>
+<section id="jetbrains" class="level3">
+<h3 class="anchored" data-anchor-id="jetbrains">JetBrains</h3>
+<p>IntelliJ、PyCharm、WebStorm 等 JetBrains 全家桶也有 Claude Code 插件，在 Plugins 市场搜索 “Claude Code” 安装即可。</p>
+</section>
+</section>
+<section id="十三审查代码信任但要验证" class="level2">
+<h2 class="anchored" data-anchor-id="十三审查代码信任但要验证">十三、审查代码：信任但要验证</h2>
+<p>Claude Code 写的代码质量总体不错，但你不能盲目信任。</p>
+<section id="几个常见问题" class="level3">
+<h3 class="anchored" data-anchor-id="几个常见问题">几个常见问题</h3>
+<section id="过度工程" class="level4">
+<h4 class="anchored" data-anchor-id="过度工程">1. 过度工程</h4>
+<p>你让它写一个简单的工具函数，它给你搞出一个完整的抽象层，带泛型、带接口、带工厂模式。杀鸡用了牛刀。</p>
+<p>解决方法：在 <code>CLAUDE.md</code> 里写上“优先用简单方案”，或在指令里明确说“不需要抽象”。</p>
+</section>
+<section id="幻觉-api" class="level4">
+<h4 class="anchored" data-anchor-id="幻觉-api">2. 幻觉 API</h4>
+<p>它有时候会用不存在的 API 或者过时的语法。尤其是小众库的新版本。</p>
+<p>解决方法：跑测试。这也是为什么指令里应该包含验证标准。</p>
+</section>
+<section id="改动范围膨胀" class="level4">
+<h4 class="anchored" data-anchor-id="改动范围膨胀">3. 改动范围膨胀</h4>
+<p>你让它改一个函数，它把整个文件都重构了。</p>
+<p>解决方法：明确说“只改 X，不要动其他代码”。或者用 <code>/freeze</code> 命令限制编辑范围到指定目录。</p>
+</section>
+</section>
+<section id="writerreviewer-模式" class="level3">
+<h3 class="anchored" data-anchor-id="writerreviewer-模式">Writer/Reviewer 模式</h3>
+<p>官方推荐的一个高级模式：用两个独立的会话分别扮演“写代码”和“审查代码”的角色。</p>
+<p>两个会话有独立的上下文，Reviewer 不受 Writer 的思路影响，能发现 Writer 的盲点。</p>
+<p>会话 A（Writer）：“实现 API 限流中间件”</p>
+<p>会话 B（Reviewer）：“审查 <code>@src/middleware/rateLimiter.ts</code> 里的限流实现，重点看边界情况、竞态条件、一致性”</p>
+<p>会话 A：“修复审查反馈：[粘贴 B 的输出]”</p>
+</section>
+</section>
+<section id="十四不要用-claude-code-做的事" class="level2">
+<h2 class="anchored" data-anchor-id="十四不要用-claude-code-做的事">十四、不要用 CLAUDE CODE 做的事</h2>
+<p>说了这么多“应该怎么做”，最后聊聊“不应该做什么”。</p>
+<section id="不要让它做你完全不了解的事" class="level3">
+<h3 class="anchored" data-anchor-id="不要让它做你完全不了解的事">1. 不要让它做你完全不了解的事</h3>
+<p>如果你对 Kubernetes 一无所知，不要让 Claude Code 帮你写部署配置然后直接用。你无法审查你不懂的东西。</p>
+</section>
+<section id="不要在没有版本控制的环境下用" class="level3">
+<h3 class="anchored" data-anchor-id="不要在没有版本控制的环境下用">2. 不要在没有版本控制的环境下用</h3>
+<p>没有 Git 就没有回退的能力。Claude Code 的改动可能覆盖你的文件，没有版本控制就是裸奔。</p>
+</section>
+<section id="不要一口气扔一个巨大的任务" class="level3">
+<h3 class="anchored" data-anchor-id="不要一口气扔一个巨大的任务">3. 不要一口气扔一个巨大的任务</h3>
+<p>“把整个项目从 JavaScript 迁移到 TypeScript”</p>
+<p>这种指令等于让 Claude Code 自由发挥。结果不可控。拆成小步骤，每一步确认后再做下一步。</p>
+</section>
+<section id="不要指望一次就完美" class="level3">
+<h3 class="anchored" data-anchor-id="不要指望一次就完美">4. 不要指望一次就完美</h3>
+<p>迭代是正常的。用 <code>/rewind</code> 回退，用精确的反馈描述“哪里不对”。</p>
+</section>
+</section>
+<section id="总结" class="level2">
+<h2 class="anchored" data-anchor-id="总结">总结</h2>
+<p>Claude Code 的核心使用哲学其实很简单：</p>
+<p>它是一个极其能干的协作者，但不是自动驾驶。方向盘始终在你手里。</p>
+<p>按重要性排序，我的建议是：</p>
+<ol type="1">
+<li>写好 <code>CLAUDE.md</code>：一次投入，每次对话都受益</li>
+<li>给精确的指令：目标 + 约束 + 验证标准</li>
+<li>用 Plan Mode：复杂任务先规划再动手</li>
+<li>管理上下文：<code>/clear</code>、<code>/compact</code>、子 Agent</li>
+<li>控制权限：deny 危险操作，allow 常用命令</li>
+<li>频繁 commit：保留回退能力</li>
+</ol>
+<p>做到这些，Claude Code 能让你的效率翻好几倍。做不到，它只会更快地帮你制造混乱。</p>
+<p>工具的价值，永远取决于使用它的人。</p>
+<p>以上结合了 Claude Code 官方文档和实战经验。如果你有更好的实践，欢迎交流。</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<hr class="post-bio-divider">
+<section class="post-author-bio">
+  <img src="https://michaelgentsJason.github.io/jiashenliu.github.io/assets/avatar.jpg" class="post-author-bio-avatar" alt="Jiashen Liu">
+  <div class="post-author-bio-text">
+    <strong>Jiashen Liu / 刘家燊</strong>
+    <p>
+      PhD Student at University of Warwick (Cyber Security Engineering, MSc with Distinction).
+      Research interests: Multimodal AI, RAG, Knowledge-Intensive Reasoning Systems,
+      Web Security Automation.
+    </p>
+    <div class="post-author-bio-links">
+      <a href="https://michaelgentsJason.github.io/jiashenliu.github.io/">🏠 Homepage</a>
+      <a href="mailto:Jiashen.Liu@warwick.ac.uk">✉ Email</a>
+      <a href="https://github.com/michaelgentsJason">⌥ GitHub</a>
+    </div>
+  </div>
+</section>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/michaelgentsJason\.github\.io\/jiashenliu\.github\.io\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Jiashen Liu</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://michaelgentsJason.github.io/jiashenliu.github.io/">
+<p>← Back to Homepage</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

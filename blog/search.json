@@ -1,0 +1,205 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Jiashen Liu",
+    "section": "",
+    "text": "I am Jiashen Liu / 刘家燊, currently studying at the University of Warwick (Cyber Security Engineering, MSc with Distinction). I graduated from Nanjing Agricultural University with a major in Information Management and Information Systems, where my graduation thesis DIAKG-GPT won the university-level excellent graduation thesis award."
+  },
+  {
+    "objectID": "about.html#research-interests",
+    "href": "about.html#research-interests",
+    "title": "About Jiashen Liu",
+    "section": "Research Interests",
+    "text": "Research Interests\nMy research focuses on Multimodal AI and Knowledge-Intensive Reasoning Systems, with a key interest in Vision-Language-Structured Knowledge Fusion, Tool-Augmented Reasoning, and Multi-Step Decision Making for Complex Tasks. Recently, my research covers Web Security Automation, Document Retrieval & Understanding, and Multimodal Evaluation Benchmark Construction."
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About Jiashen Liu",
+    "section": "Contact",
+    "text": "Contact\nContact: Jiashen.Liu@warwick.ac.uk"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html",
+    "href": "posts/claude-code-best-practices/index.html",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "",
+    "text": "原文来源：x.com/PandaTalk8/article/2035975664730575325\n我用 Claude Code 大半年了，踩过的坑比写过的代码还多。\n一开始我以为 Claude Code 就是一个“更高级的 Copilot” 在终端里打字，它帮我写代码，完事。后来才发现，这东西的上限远比我想象得高，但前提是你得知道怎么用。\n这篇文章结合官方文档和实战经验，整理了我认为最重要的使用技巧。有些是血泪教训，有些是读文档才知道的隐藏功能。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#一claude.md最被低估的功能",
+    "href": "posts/claude-code-best-practices/index.html#一claude.md最被低估的功能",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "一、CLAUDE.MD：最被低估的功能",
+    "text": "一、CLAUDE.MD：最被低估的功能\n如果你只记住这篇文章的一件事，就记这个：写好你的 CLAUDE.md。\nCLAUDE.md 是 Claude Code 在每次对话开始时自动读取的指令文件。它就像你给一个新同事写的 onboarding doc，你希望他知道什么，你就写什么。\n很多人不写 CLAUDE.md，或者随便写两行。结果就是每次对话都要从头解释项目结构、编码规范、技术栈选择。这就像每天早上都要重新给同事介绍一遍公司。\n\n一个好的 CLAUDE.md 应该包含什么\n# 项目名称\n\n## 构建和测试命令\n- 安装依赖：npm install\n- 运行测试：npm test\n- 单个测试：npm test -- --grep \"test name\"\n- 格式化：npm run format\n\n## 编码规范\n- Python 使用 ruff 格式化，行宽 88\n- 测试用 pytest，每个 service 对应一个测试文件\n- API 路由文件名用复数：users.py, orders.py\n- 提交信息用英文，格式：type(scope): description\n\n## 架构决策\n- 选 Tailwind 而不是 CSS Modules，因为团队统一了这个规范\n- 用户权限校验在 middleware 里做，不要在每个路由重复写\n- Redis 缓存的 key 前缀统一用 `app:v1:`\n\n## 常见陷阱\n- 数据库连接池上限是 20，别在循环里开新连接\n- 不要 mock 数据库，上次 mock 测试通过但生产迁移失败了\n有几个关键原则：\n\n第一，写 Claude 从代码里读不出来的东西。项目的“为什么”比“是什么”更重要。你不需要解释 React 怎么用，但你需要告诉它“我们选 Tailwind 是因为团队统一了这个规范”。\n第二，控制在 200 行以内。官方文档明确提到，CLAUDE.md 太长会导致 Claude 忽略规则。用 markdown 标题和列表，保持可扫描性。\n第三，不要放频繁变化的内容。详细的 API 文档、逐文件描述这些东西不适合放在 CLAUDE.md 里。放链接就好。\n\n\n\nCLAUDE.md 的四级层级\nClaude Code 支持四级 CLAUDE.md，按优先级从高到低：\n我的全局 CLAUDE.md 里通常会写：\n\n我是一名全栈工程师，不需要过度解释基础概念\n回复尽量简洁，不要加无关的客套话\n代码改动后不要总结你做了什么，我会看 diff\n优先用简单方案，不要过度工程\n\n这四行，能省掉你几百次重复纠正的时间。\n\n\n进阶：用 .claude/rules/ 组织规则\n当项目大了之后，一个 CLAUDE.md 文件塞不下所有规则。官方提供了一个更优雅的方案：把规则拆到 .claude/rules/ 目录下。\n.claude/rules/\n├── testing.md        # 测试规范\n├── api-style.md      # API 编写风格\n└── frontend.md       # 前端约定\n更强大的是，你可以用 YAML frontmatter 把规则限定到特定文件：\n---\npaths: [\"src/api/**/*.ts\", \"src/routes/**/*.ts\"]\n---\n\nAPI 路由必须包含输入验证和错误处理。\n所有新端点需要在 tests/api/ 下添加集成测试。\n这样这条规则只在 Claude 访问匹配的文件时才会加载，节省上下文空间。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#二提示词的质量决定产出的质量",
+    "href": "posts/claude-code-best-practices/index.html#二提示词的质量决定产出的质量",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "二、提示词的质量决定产出的质量",
+    "text": "二、提示词的质量决定产出的质量\n这听起来像废话，但我见过太多人这样用 Claude Code：\n“帮我写一个登录功能”\n然后对着生成的一大坨代码发愁，这不是我想要的啊。\n好的指令应该包含三个要素：目标、约束、上下文。\n\n差的指令 vs 好的指令\n差：“给用户列表加个搜索功能”\n好：“在 @src/pages/UserList.tsx 的表格上方加一个搜索框。搜索走后端 API /api/users?search=xxx，不要前端过滤。用 debounce 300ms，样式和现有的 Filter 组件保持一致。”\n区别在哪？好的指令减少了歧义。Claude Code 不需要猜你要前端搜索还是后端搜索，不需要猜 debounce 时间，不需要猜样式规范。\n\n\n官方推荐的提示技巧\n\n1. 用 @ 引用具体文件\nClaude Code 支持用 @文件路径 直接把文件内容拉进上下文。比起说“那个认证相关的代码”，直接写 @src/auth/login.ts 精确得多。你甚至可以指定行号范围：@src/auth/login.ts#5-30。\n\n\n2. 贴截图和图片\n用 Ctrl+V 可以直接粘贴图片。调试 UI 问题时，贴一张“现在长这样”和“我想要这样”的截图，比文字描述有效十倍。\n\n\n3. 给验证标准\n不要只说“帮我修这个 bug”，而是：\n“修复登录超时后无法重新认证的问题。修复后，用户在 token 过期后点击任意按钮应该自动跳转到登录页。测试用例在 @tests/auth.test.ts 里，修完后跑一下确认通过。”\n给 Claude 一个可以自我验证的标准，测试用例、截图、预期输出，它就能自己检查工作质量，减少来回修改。\n\n\n4. 明确“不要做”的事\nClaude Code 有时候会过度热心，你让它修一个 bug，它顺手把周围的代码也重构了。明确说“只改这个函数，不要动其他代码”，能省很多事。\n\n\n\n模糊指令也有用武之地\n并不是所有时候都需要精确的指令。探索性任务用模糊指令反而更好：\n\n“这个文件有什么可以改进的地方？”\n“帮我理解一下这个模块的架构”\n“这段代码有什么潜在问题？”\n\n但到了实现阶段，切回精确模式。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#三plan-mode先想清楚再动手",
+    "href": "posts/claude-code-best-practices/index.html#三plan-mode先想清楚再动手",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "三、PLAN MODE：先想清楚，再动手",
+    "text": "三、PLAN MODE：先想清楚，再动手\nClaude Code 有一个 Plan Mode，这是我认为最被低估的工作流。\n\n怎么进入 Plan Mode\n三种方式：\n# 启动时直接进入\nclaude --permission-mode plan\n# 对话中切换（按两次 Shift+Tab）\nShift+Tab Shift+Tab\n# 在提示词里说\n先不要改代码，帮我做个计划\n在 Plan Mode 下，Claude Code 只能读取文件、搜索代码，不能做任何修改。它会探索代码库，分析你的需求，然后给出一个详细的实现计划。\n\n\nPlan Mode 的正确打开方式\n关键操作：按 Ctrl+G 可以在你的编辑器里打开并编辑计划。\n这意味着你可以：\n\n让 Claude 生成初始计划\nCtrl+G 打开计划，删掉你不同意的部分，补充你自己的想法\n切回正常模式（Shift+Tab），让 Claude 按修改后的计划执行\n\n改一个计划只需要一句话，改已经写好的代码要花十倍的时间。\n\n\n推荐的复杂任务工作流\n官方推荐的标准流程是四步：探索 → 规划 → 实现 → 验证。\n\n进入 Plan Mode\n让 Claude 阅读相关代码：“读一下 src/auth/ 下的代码，理解 session 处理逻辑”\n请求计划：“制定一个 OAuth2 迁移方案”\nCtrl+G 审查和编辑计划\n切回正常模式\n“按照计划实现，写完跑测试”\n让 Claude 对照需求自查\n\n\n\n什么时候不需要 Plan Mode\n\n改一个变量名\n修一个明显的 typo\n加一行日志\n\n判断标准很简单：如果这个任务的实现方式只有一种，直接做。如果有多种选择，先规划。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#四子-agentclaude-code-的分身术",
+    "href": "posts/claude-code-best-practices/index.html#四子-agentclaude-code-的分身术",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "四、子 AGENT：CLAUDE CODE 的分身术",
+    "text": "四、子 AGENT：CLAUDE CODE 的分身术\n子 Agent 是 Claude Code 的一个强大机制，它可以启动独立的 AI 进程来并行处理任务，每个子 Agent 有自己的上下文窗口，不会污染你的主对话。\n\n内置的子 Agent 类型\n\n\n\n类型\n能力\n用途\n\n\n\n\nExplore\n只读，快速搜索代码库\n探索、找文件、找定义\n\n\nPlan\n只读，研究分析\nPlan Mode 下的代码分析\n\n\nGeneral\n完整能力\n复杂的多步骤任务\n\n\n\n\n\n子 Agent 最大的价值：隔离上下文\n当你让 Claude 跑测试、分析日志、搜索大量文件时，这些操作会产生海量输出，塞满你的上下文窗口。用子 Agent 来做这些事，输出留在子 Agent 的上下文里，只有摘要返回给你。\n比如：\n\n“用子 Agent 跑一下全量测试，把失败的用例列出来”\n“用子 Agent 搜索所有使用了 deprecated API 的文件”\n\n\n\n后台运行：Ctrl+B\n按 Ctrl+B 可以把子 Agent 放到后台运行。你可以继续和 Claude 聊其他事，等后台任务完成后会自动通知你。\n适合：\n\n跑测试套件（通常需要几分钟）\n大范围代码搜索\n不紧急的代码审查\n\n\n\n自定义子 Agent\n你可以在 .claude/agents/ 目录下创建自定义 Agent：\n---\nname: code-reviewer\ndescription: 代码审查专家。代码改动后自动触发。\ntools: Read, Grep, Glob, Bash\nmodel: sonnet\n---\n\n你是一位资深代码审查者。检查以下维度：\n- 代码清晰度和可读性\n- 错误处理是否完整\n- 有没有暴露敏感信息\n- 输入验证\n- 性能隐患\n然后在对话中用 @\"code-reviewer (agent)\" 调用它。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#五上下文管理最容易被忽视的关键",
+    "href": "posts/claude-code-best-practices/index.html#五上下文管理最容易被忽视的关键",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "五、上下文管理：最容易被忽视的关键",
+    "text": "五、上下文管理：最容易被忽视的关键\nClaude Code 的上下文窗口虽然大（最多 1M token），但它不是无限的，而且上下文管理直接决定了输出质量。\n\n上下文里都装了什么\n\n你的对话历史\nClaude 读取的所有文件内容\n命令执行的输出\nCLAUDE.md 文件（每次都加载）\nMemory 文件（前 200 行）\n加载的 Skill 和 MCP 工具定义\n\n\n\n五个实用策略\n\n1. /clear：一件事做完就清\n不要在同一个对话里又修 bug 又加功能又重构。/clear 会清空上下文但保留 CLAUDE.md，相当于一次免费的重启。\n\n\n2. /compact：手动压缩上下文\n当对话变长时，输入 /compact 让 Claude 自动总结和压缩之前的对话。更好的用法是给压缩加一个焦点：\n/compact 专注于 API 改动和测试结果\n这样 Claude 在压缩时会优先保留你关心的内容。\n\n\n3. /context：看看上下文被谁吃了\n输入 /context 可以看到当前上下文的使用情况，哪些文件占了多少 token，MCP 工具定义占了多少。我经常发现一些没用的 MCP server 占了大量空间。\n\n\n4. 用子 Agent 隔离噪声\n跑测试、分析日志这些操作会产生大量输出。让子 Agent 去做，主对话的上下文保持干净。\n\n\n5. 在 CLAUDE.md 里写压缩保留指令\n你可以告诉 Claude 压缩时必须保留什么：\n# 压缩指令\n压缩上下文时，始终保留：\n- 已修改文件的完整列表\n- 测试命令和结果\n- 关键的架构决策\n\n\n\nMemory vs CLAUDE.md\nMemory 适合存什么：你的偏好（“这个人喜欢简洁回复”）、项目约定（“部署有个特殊步骤”）、历史决策（“上次选了方案 A 是因为 X”）。\nMemory 不适合存什么：代码细节、Git 历史、临时状态，这些从代码和 Git 里获取更准确。\n用 /memory 命令可以查看和管理所有已加载的 Memory。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#六权限管理安全和效率的平衡",
+    "href": "posts/claude-code-best-practices/index.html#六权限管理安全和效率的平衡",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "六、权限管理：安全和效率的平衡",
+    "text": "六、权限管理：安全和效率的平衡\nClaude Code 提供了五种权限模式，用 Shift+Tab 在对话中循环切换。\n\n权限规则配置\n在 .claude/settings.json 里，你可以精细控制每种工具的权限：\n{\n  \"permissions\": {\n    \"allow\": [\n      \"Bash(npm run *)\",\n      \"Bash(git commit *)\",\n      \"Edit(src/**/*.ts)\",\n      \"Read(*.md)\"\n    ],\n    \"deny\": [\n      \"Bash(rm -rf *)\",\n      \"Edit(.env)\"\n    ]\n  }\n}\n规则优先级：deny → ask → allow（deny 最优先）。\n这意味着你可以大胆地 allow 常用命令，同时用 deny 保护敏感文件。比如 .env 文件，无论如何都不应该被编辑。\n\n\n设置文件的层级\n和 CLAUDE.md 类似，settings 也有多级：\n组织策略（最高优先级）\n  ↓\nCLI 参数\n  ↓\n.claude/settings.local.json（本地，不提交到 Git）\n  ↓\n.claude/settings.json（项目级，团队共享）\n  ↓\n~/.claude/settings.json（全局，个人）\n  ↓\n默认值（最低优先级）\n我的建议：把团队共享的规则放 .claude/settings.json，个人偏好放 ~/.claude/settings.json，敏感配置放 .claude/settings.local.json（记得加到 .gitignore）。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#七hooks让规则变成铁律",
+    "href": "posts/claude-code-best-practices/index.html#七hooks让规则变成铁律",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "七、HOOKS：让规则变成铁律",
+    "text": "七、HOOKS：让规则变成铁律\nCLAUDE.md 里的指令是“建议”，Claude 大部分时候会遵守，但偶尔会忘。Hooks 是“铁律”，无论如何都会执行。\nHooks 是在特定生命周期事件上自动触发的 shell 命令。配置在 settings.json 里。\n\n实用示例\n自动格式化，每次编辑后运行 Prettier：\n{\n  \"hooks\": {\n    \"PostToolUse\": [{\n      \"matcher\": \"Edit|Write\",\n      \"hooks\": [{\n        \"type\": \"command\",\n        \"command\": \"jq -r '.tool_input.file_path' | xargs npx prettier --write\"\n      }]\n    }]\n  }\n}\n保护关键文件，阻止修改生产配置：\n{\n  \"hooks\": {\n    \"PreToolUse\": [{\n      \"matcher\": \"Edit|Write\",\n      \"hooks\": [{\n        \"type\": \"command\",\n        \"command\": \".claude/hooks/protect-files.sh\"\n      }]\n    }]\n  }\n}\nHook 命令返回 exit code 0 表示允许，返回 exit code 2 表示阻止。这意味着你可以写任意复杂的判断逻辑。\n上下文压缩后重新注入关键信息：\n{\n  \"hooks\": {\n    \"SessionStart\": [{\n      \"matcher\": \"compact\",\n      \"hooks\": [{\n        \"type\": \"command\",\n        \"command\": \"echo '用 Bun 不用 npm。提交前跑 bun test。'\"\n      }]\n    }]\n  }\n}\n这解决了一个常见痛点：对话太长被压缩后，之前提过的重要指令可能丢失。用 Hook 可以在每次压缩后自动重新注入。\n\n\nHook 的四种类型\n\n\n\n类型\n说明\n\n\n\n\ncommand\n执行 shell 命令，从 stdin 读取 JSON\n\n\nhttp\n向 URL 发送 POST 请求\n\n\nprompt\n单次 LLM 调用，做 yes/no 判断\n\n\nagent\n启动一个子 Agent 进行验证"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#八git-工作流用好-worktree",
+    "href": "posts/claude-code-best-practices/index.html#八git-工作流用好-worktree",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "八、GIT 工作流：用好 WORKTREE",
+    "text": "八、GIT 工作流：用好 WORKTREE\nClaude Code 能执行 Git 命令，这是一把双刃剑。但官方提供了一个很好的安全网：Worktree。\n\nGit Worktree：隔离的工作空间\n# 在隔离的 worktree 中启动 Claude\nclaude --worktree feature-auth\nclaude --worktree bugfix-123\n\n# 自动生成名字\nclaude --worktree\nWorktree 会在 .claude/worktrees/ 下创建一个独立的 Git 分支副本。Claude 在里面怎么折腾都不影响你的主分支。退出时：\n\n如果没有改动，自动清理\n如果有改动，提示你保留或删除\n\n这对于探索性任务特别有用。不确定某个重构方案能不能行？开个 worktree 试试，不行就扔掉，零风险。\n\n\n几个 Git 铁律\n\n1. 永远不要让 Claude Code 自动 push\n它可以 commit，但 push 这个动作应该由你来确认。一旦 push 到远端，回退成本就大了。\n\n\n2. 频繁 commit\n做完一个小功能就 commit。用 /rewind 可以回退到任意一个 checkpoint，但前提是你有 commit 记录。\n\n\n3. 警惕破坏性操作\n如果 Claude Code 要执行 git reset --hard、git push --force、rm -rf，一定要在脑子里过一遍后果再批准。这些操作没有 undo。你也可以在权限规则里直接 deny 掉这些命令。\n\n\n4. 从 PR 恢复上下文\n这会自动加载 PR 的改动和讨论作为上下文，非常适合 code review 或者继续别人的工作。\nclaude --from-pr 123"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#九快捷键和命令速查",
+    "href": "posts/claude-code-best-practices/index.html#九快捷键和命令速查",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "九、快捷键和命令速查",
+    "text": "九、快捷键和命令速查\n这些快捷键我每天都在用，强烈建议记住。\n\n最常用的斜杠命令\n\n/compact [焦点]：压缩上下文，可指定保留重点\n/clear：清空对话，重新开始\n/context：查看上下文使用情况\n/memory：查看和管理 Memory\n/rewind：回退到某个 checkpoint\n/resume [名称]：恢复之前的对话\n/model：切换模型\n/effort [级别]：设置推理深度：low / medium / high / max\n/init：自动生成 CLAUDE.md\n/mcp：管理 MCP 服务器\n/permissions：查看权限规则\n/cost：查看 token 消耗\n\n/init 对新项目特别有用，它会自动分析你的代码库，帮你生成一个 CLAUDE.md 的初稿。虽然通常需要手动调整，但比从零开始快得多。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#十extended-thinking让-claude-想深一点",
+    "href": "posts/claude-code-best-practices/index.html#十extended-thinking让-claude-想深一点",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "十、EXTENDED THINKING：让 CLAUDE 想深一点",
+    "text": "十、EXTENDED THINKING：让 CLAUDE 想深一点\n对于复杂问题，你可以开启 Extended Thinking 模式，让 Claude 在回答前花更多时间推理。\n\n怎么用\n# 快捷键切换\nOption+T (Mac) / Alt+T (Windows/Linux)\n# 或者用命令\n/effort high    # 更深入的推理\n/effort max     # 最大推理深度\n/effort low     # 简单任务，省 token\n\n\n什么时候该用\n\n复杂的架构决策\n棘手的 debug（多个可能原因需要排除）\n多步骤的重构方案设计\n权衡多个方案的利弊\n\n\n\n什么时候不需要\n\n简单的代码修改\n格式化、重命名\n已经很明确的 bug 修复\n\n小技巧：在提示词里写 ultrathink 可以强制触发最高推理深度，不需要手动调整 effort 设置。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#十一mcp-server让-claude-连接外部世界",
+    "href": "posts/claude-code-best-practices/index.html#十一mcp-server让-claude-连接外部世界",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "十一、MCP SERVER：让 CLAUDE 连接外部世界",
+    "text": "十一、MCP SERVER：让 CLAUDE 连接外部世界\nMCP（Model Context Protocol）让 Claude Code 能和外部工具通信，GitHub、数据库、Slack、Notion 等等。\n\n快速添加\nclaude mcp add github -- npx @anthropic-ai/mcp-server-github\nclaude mcp add postgres -- npx @anthropic-ai/mcp-server-postgres postgresql://localhost:5432/mydb\n\n\n配置文件\nMCP 配置在 .mcp.json 里：\n{\n  \"mcpServers\": {\n    \"github\": {\n      \"type\": \"stdio\",\n      \"command\": \"npx\",\n      \"args\": [\"@modelcontextprotocol/server-github\"],\n      \"env\": {\n        \"GITHUB_TOKEN\": \"$GITHUB_TOKEN\"\n      }\n    }\n  }\n}\n\n\n注意上下文开销\n每个 MCP server 会额外消耗 100-500+ token 的工具定义。用 /mcp 命令可以查看每个 server 的开销，禁用不用的 server。\n我的经验：不要贪多。常用的 2-3 个 MCP server 就够了。装太多，上下文空间被工具定义吃掉，反而影响代码分析的质量。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#十二ide-集成不只是终端",
+    "href": "posts/claude-code-best-practices/index.html#十二ide-集成不只是终端",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "十二、IDE 集成：不只是终端",
+    "text": "十二、IDE 集成：不只是终端\n\nVS Code\n安装 Claude Code 扩展后，你可以在 VS Code 里直接使用 Claude，而不需要切到终端。\n几个好用的功能：\n\n并排 diff 视图：Claude 的改动以 diff 形式显示，一目了然\nOption+K / Alt+K：快速插入当前文件的 @ 引用\n多标签对话：在不同的标签页里开多个独立对话\nCmd+Shift+Esc：快速打开新的对话标签\n\n\n\nJetBrains\nIntelliJ、PyCharm、WebStorm 等 JetBrains 全家桶也有 Claude Code 插件，在 Plugins 市场搜索 “Claude Code” 安装即可。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#十三审查代码信任但要验证",
+    "href": "posts/claude-code-best-practices/index.html#十三审查代码信任但要验证",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "十三、审查代码：信任但要验证",
+    "text": "十三、审查代码：信任但要验证\nClaude Code 写的代码质量总体不错，但你不能盲目信任。\n\n几个常见问题\n\n1. 过度工程\n你让它写一个简单的工具函数，它给你搞出一个完整的抽象层，带泛型、带接口、带工厂模式。杀鸡用了牛刀。\n解决方法：在 CLAUDE.md 里写上“优先用简单方案”，或在指令里明确说“不需要抽象”。\n\n\n2. 幻觉 API\n它有时候会用不存在的 API 或者过时的语法。尤其是小众库的新版本。\n解决方法：跑测试。这也是为什么指令里应该包含验证标准。\n\n\n3. 改动范围膨胀\n你让它改一个函数，它把整个文件都重构了。\n解决方法：明确说“只改 X，不要动其他代码”。或者用 /freeze 命令限制编辑范围到指定目录。\n\n\n\nWriter/Reviewer 模式\n官方推荐的一个高级模式：用两个独立的会话分别扮演“写代码”和“审查代码”的角色。\n两个会话有独立的上下文，Reviewer 不受 Writer 的思路影响，能发现 Writer 的盲点。\n会话 A（Writer）：“实现 API 限流中间件”\n会话 B（Reviewer）：“审查 @src/middleware/rateLimiter.ts 里的限流实现，重点看边界情况、竞态条件、一致性”\n会话 A：“修复审查反馈：[粘贴 B 的输出]”"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#十四不要用-claude-code-做的事",
+    "href": "posts/claude-code-best-practices/index.html#十四不要用-claude-code-做的事",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "十四、不要用 CLAUDE CODE 做的事",
+    "text": "十四、不要用 CLAUDE CODE 做的事\n说了这么多“应该怎么做”，最后聊聊“不应该做什么”。\n\n1. 不要让它做你完全不了解的事\n如果你对 Kubernetes 一无所知，不要让 Claude Code 帮你写部署配置然后直接用。你无法审查你不懂的东西。\n\n\n2. 不要在没有版本控制的环境下用\n没有 Git 就没有回退的能力。Claude Code 的改动可能覆盖你的文件，没有版本控制就是裸奔。\n\n\n3. 不要一口气扔一个巨大的任务\n“把整个项目从 JavaScript 迁移到 TypeScript”\n这种指令等于让 Claude Code 自由发挥。结果不可控。拆成小步骤，每一步确认后再做下一步。\n\n\n4. 不要指望一次就完美\n迭代是正常的。用 /rewind 回退，用精确的反馈描述“哪里不对”。"
+  },
+  {
+    "objectID": "posts/claude-code-best-practices/index.html#总结",
+    "href": "posts/claude-code-best-practices/index.html#总结",
+    "title": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”",
+    "section": "总结",
+    "text": "总结\nClaude Code 的核心使用哲学其实很简单：\n它是一个极其能干的协作者，但不是自动驾驶。方向盘始终在你手里。\n按重要性排序，我的建议是：\n\n写好 CLAUDE.md：一次投入，每次对话都受益\n给精确的指令：目标 + 约束 + 验证标准\n用 Plan Mode：复杂任务先规划再动手\n管理上下文：/clear、/compact、子 Agent\n控制权限：deny 危险操作，allow 常用命令\n频繁 commit：保留回退能力\n\n做到这些，Claude Code 能让你的效率翻好几倍。做不到，它只会更快地帮你制造混乱。\n工具的价值，永远取决于使用它的人。\n以上结合了 Claude Code 官方文档和实战经验。如果你有更好的实践，欢迎交流。"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog Posts",
+    "section": "",
+    "text": "CLAUDE CODE 最佳实践：从“能用”到“真的好用”\n\n\n\nClaude Code\n\nAI Coding\n\nProductivity\n\n\n\n结合官方文档和实战经验，总结 CLAUDE.md、提示词、Plan Mode、子 Agent、上下文管理、权限、Hooks 和 Git 工作流等 Claude Code 最佳实践。\n\n\n\n\n\nMar 23, 2026\n\n\nPandaTalk8\n\n\n\n\n\n\n\n\n\n\n\n\nVibe Research, or How I Wrote an Academic Paper in Four Days\n\n\n\nLLM\n\nAI\n\nWriting\n\n\n\nA personal account of using AI to write an academic research paper in four days.\n\n\n\n\n\nFeb 26, 2026\n\n\nVincent Grégoire, PhD, CFA\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/vibe-research/index.html",
+    "href": "posts/vibe-research/index.html",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "",
+    "text": "I tried to write an academic paper in four weeks using AI… and finished in four days. The paper, titled Investing in Artificial General Intelligence, is on SSRN and on GitHub.\nI’m not writing to brag about how fast I was able to write the paper. My motivation is simple: I was blown away by the result, so I want to share my experience and insights. To be clear, I think it is a good paper that looks nothing like what I would categorize as “obviously written by AI”. Yes, there are em-dashes, but not more than in my pre-ChatGPT papers. I would be very proud of that paper if I had written it myself without AI. Now, I don’t know how to feel about it and I wonder how academic research will evolve in the coming year as AI becomes more powerful and accessible.\nA second reason for writing this post is transparency. The use of AI in the research process, while very common, is still a gray area ethically. I went all in on AI for this paper, so it feels like full disclosure is in order, especially since I will be submitting this paper to conferences and (eventually) journals.\nThe initial trigger to go all in on AI for a research paper was the call for papers for the Human × AI Finance conference:\nThis was a perfect opportunity to test the limits of AI in research. To be clear, I consider myself an aggressive early adopter of AI, and I had attempted to use it to speedrun research papers in the past with limited success. However, the capabilities of AI have improved significantly since then, and I was curious to see how far I could push it (plus I just finished teaching, so it was time to have some fun).\nSo the challenge was set. I had four weeks to write a research paper using as much AI assistance as possible, i.e. to “vibe research”. Here is how it went down."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day--1-the-idea",
+    "href": "posts/vibe-research/index.html#day--1-the-idea",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day -1: The Idea",
+    "text": "Day -1: The Idea\nThe idea for the paper came to me last Friday while listening to Dwarkesh Patel’s interview with Dario Amodei, the CEO of Anthropic. There was some discussion about his views on investing in infrastructure, and why Anthropic does not invest as aggressively in infrastructure as they could. I thought that was an interesting angle to explore, especially given the recent surge in investment in AI infrastructure. However, this was just a vague idea at this point, and clearly one that falls under “theoretical corporate finance”, which is not my area of expertise. In fact, I haven’t studied corporate finance models since the PhD (I graduated in 2013). This is where I find AI most exciting: it can help you pursue ideas that you would not have explored otherwise because of the time and effort required to get up to speed on the relevant literature and tools."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day-0-the-outline",
+    "href": "posts/vibe-research/index.html#day-0-the-outline",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day 0: The Outline",
+    "text": "Day 0: The Outline\nOn Saturday, I spent my afternoon at a tennis club watching my son play in a tournament. I had my phone with me, and I decided to use that time to start fleshing out the idea. I see this as the starting point of my work on the paper. Using Claude, I started with a simple prompt:\n\nI just listened to an interview with Anthropic’s CEO (transcript here: https://www.dwarkesh.com/p/dario-amodei-2). I found the discussion on the economics of investment in compute infrastructure very interesting and thought that it would be nice to write down a real option model of investment that would embed the idea of limited competition and default risk discussed in the interview. Can you first summarize the relevant parts of the interview related to investment in compute and how Anthropic is approaching those issues?\n\nI then turned on “research” mode in Claude, and asked it to “search the academic literature for existing models that would have similar features (even if not all features are present). Focus on top finance and economics journals.”. After ~30 minutes, I got a nice (but incomplete) literature review, then asked it “from this literature review, what approach do you suggest to build a model that incorporates all of these features?”. It suggested two possible approaches: one for a paper and a simpler one appropriate for a blog post. For my final prompt of the afternoon, I asked it to write a plan to implement the paper:\n\napproach A is the way to go; i’m looking to write a fully fledged academic paper on this. i think it would be nice to solve a simplified version of the model anatically (ie duopoly) to illustrate the key mechanism insights, then we could solve a mire complex version numerically. we could even calibrate a version of the model using publicly stated numbers from the frontier labs and other sources. the main questions I want to tackle is how to think about optimal investment in compute for these firms. it would be great if we could also use it the model to tackle (even partially) the problem of valuing these firms and provide insights as to how external observers (ie market participants) could infer the probability of a regime switch (the lambda) from frontier labs investment decisions. In other words, will we be able to tell the agi is near (assuming AI labs will know first that it is near). For the numerical exercises, I will use python with numpy (unless something else more appropriate exists). For the anslytical solutions, I would like to try using python with simpy, but I might revert to solving the model « by hand ». Can you make a detailed plan of action for deriving the model, implementing the numerical solutions and writing the full paper? Assume that we are aiming for a top journal such as AER, econometrica, or the journal of finance.\n\nI had no idea if using code (sympy and numpy) to solve the model would help. From my experience doing data analysis, AI agent are great at writing and reviewing code, and great at writing tests for code, so I figured that would add another layer of confidence in the results.\nI got a very detailed plan of action, and my focus was back on tennis. Later that evening, I created a private GitHub repository for the project (now public, so feel free to snoop around), and set it up using a template of mine (note that the template is broken, a blank project needs some manual fixes so I wouldn’t recommend using it for now). The key components: Python with uv for the code, Quarto for the paper, Claude Code (CC) for most of the work, and VS Code with a Devcontainer for improved security when letting CC work with --allow-dangerously-skip-permissions (aka YOLO mode).\nI added the lit review and the plan of action to the repository, and I was ready to start working on the paper. Or, to be exact, let CC work on the paper. I asked it to read the plan, create an issue for each phase of the plan (you can see the first issue here), and then to work on all issues in sequence. I activated YOLO mode and made sure it was working hard on my paper. Then I went to bed."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day-1-the-first-draft",
+    "href": "posts/vibe-research/index.html#day-1-the-first-draft",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day 1: The First Draft",
+    "text": "Day 1: The First Draft\nI woke up on Sunday morning to find that CC was done. There it was, I had a first draft of the paper, with all the sections filled in. It was complete; not in the sense that it was ready to be submitted, but in the sense that it had all the components of a research paper. I was amazed. I wanted to read the paper, but I didn’t have time: it was Sunday morning, and there was a Olympic gold-medal hockey game to watch. But that was no reason to let AI rest, so I decided to iterate on the paper while watching the game.\nFollowing an approach I used for coding projects, I launched a fresh instance of CC, an instance of Codex CLI, and an instance of OpenCode (with Gemini), and I asked each agent to review the paper, the code, and the proofs and write a report. You can have a look at the full instructions (written by Claude, of course). When they were done, I asked a fresh instance of CC to read the reports, write a consolidated report with suggested fixes, and then to implement those fixes. When it was done, I repeated the whole process again one more time.\nAfter watching a very entertaining hockey game (with an unfortunate overtime loss for Team Canada), I was back at the tennis club but this time with my laptop so I could work between matches (my son made the final, so I spent a good chunk of my week-end there.) Looking at the AI feedback, I noticed that one area the AI wouldn’t be able to fix by itself was getting better references on public statements by tech executives related to the topic under study. For that, more research was needed, so I tasked Claude with it:\n\nI want to better understand how executive of AI frontier labs make decisions regarding their investments in compute infrastructure, how they choose to allocate their computing power between training and inference, and when they believe they will achieve AGI (or a similar inflexion point in performance). Focus of news articles, interviews, podcasts, etc., from the last 12 to 18 months.\n\nThat was enough to get a much better set of media references for the introduction. I asked CC to read the document and update the introduction, and then loaded the PDF on my iPad to have a first read of the introduction. Later that evening, I gave my feedback to CC and asked it to incorporate it in the paper. At that point, I still hadn’t written a single word of the paper directly myself. All changes to the writeup were made through prompts to CC.\nI continued to iterate on the paper using the coding agents to review, but I also started asking feedback from the web versions of ChatGPT 5.2 (with thinking activated) and Claude.ai with Opus 4.6, combining their feedback and asking CC to implement the relevant suggestions. These were different because they didn’t have access to the code and the Quarto markdown files, only to the rendered pdf. Still, I found that having multiple agents with different capabilities and perspectives was very helpful in improving the paper."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day-2-iterating",
+    "href": "posts/vibe-research/index.html#day-2-iterating",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day 2: Iterating",
+    "text": "Day 2: Iterating\nI spent most of my work time (besides a few meetings) the next day iterating on the paper with the same loop (either the coding agents or the chat-based agents). However, at that point I also started paying more attention to the reviews and asking for more specific feedback on the model and the results. These interventions, while not time consuming for me, were significant in terms of the changes they generated in the paper. The human in the loop was not doing the heavy lifting, but it was providing the needed guidance and feedback to steer the paper in the right direction. I also started making more significant changes to the model and the writing, but I still didn’t write anything directly myself; changes were made through CC.\nI don’t know exactly how many rounds of iteration I did on the paper, but looking at my chat history, I had Claude.ai and ChatGPT do seven reviews each over the four days, and I had the coding agents do a similar number of “full repository” reviews.\nI eventually realized that my Day 0 typo of “simpy” instead of “sympy” had caused the AI to completely ignore the use of sympy. That got me worried that the derivation of the model could be a complete fabrication, so I asked CC to write the code to solve the model using sympy, which it managed to do it without issues. I also had it write a Jupyter notebook with the model derivation to make it easier for me to review the math.\nAnother concern I had was the accuracy of the references. The literature review was done by Claude.ai using its research feature which is supposed to give accurate references, but I still don’t fully trust it. Verifying the references was thus a must, but I didn’t want to do it manually. Instead, I tried having CC check the references for me (CC has a --chrome mode which allows it to connect to an instance of Claude in Chrome). It didn’t quite work (probably because of the Devcontainer setup), so I reverted to using Claude Cowork instead (which can also connect to a Chrome instance).\nI don’t have the exact prompt I used, but it was something along the lines of: “Go over all the academic references in the bibtex file, and search them one at a time on Google Scholar. For each reference, check that the title, authors, journal, and year are correct. If you find any discrepancies, write them in a report. Also note down the references you can’t find.” It took a while, but the next day I woke up to find a nice report waiting for me. Besides minor fixes, the main issue was that one of the references was completely fabricated, and one other one had the wrong title and journal."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day-3-simplifying-the-model",
+    "href": "posts/vibe-research/index.html#day-3-simplifying-the-model",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day 3: Simplifying the Model",
+    "text": "Day 3: Simplifying the Model\nDay 3 was mostly a continuation of the iteration process, but I also started asking CC to make changes to the figures and tables. My AI reviews kept complaining that the data for my calibration exercise was too limited, so I had Claude.ai do another targeted search for the relevant data and used the resulting report to update the calibration section.\nAt the end of the day, I actually read the full paper for the first time, and found the model to be very complex, maybe even too complex. I thought of a potential simplification: take out the option to invest in the post-AGI regime. This was a substantial change to the model and the code, so I asked CC to implement it and waited until the next day to see the results."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#day-4-finishing-touches",
+    "href": "posts/vibe-research/index.html#day-4-finishing-touches",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Day 4: Finishing Touches",
+    "text": "Day 4: Finishing Touches\nCC implemented the simplification, but also left me a note. It turns out that the simplification made it impossible to solve the model analytically. I took the explanation to Claude.ai and had a good chat with it about the issues before concluding that the AI was right. The nice thing about using git to track your changes is that when you try things in a branch and they don’t work, you can just leave it there (or delete it) and go back to where you were before, so this is what I did.\nI spent the rest of the day looking for more ways to trim the paper and make it more concise, to simplify the model as much as possible without losing the key insights, and to polish the figures and the introduction. I also validated the non-academic references in the introduction and added a few more (manually this time because I wanted only credible media sources, which I found to be a bit hit or miss when I asked Claude to do it).\nI also received an email from a colleague of mine who pointed me to Refine, a tool for “AI-powered peer review”. I had heard of it before, but I had never tried it. I signed up and used my free credit to review the paper. The free review is somewhat limited, but the report was nonetheless helpful in catching some issues the other agents had missed. The report was detailed enough that CC was able to read it, understand the issues, and implement the relevant changes. After some more edits and polishing, I was finally happy with the paper.\nAt 9:55 PM on Wednesday (4 days and 8 hours after starting work on the paper), I created the first “release” of the paper on GitHub and submitted the paper to SSRN. I was done (for now). I had a research paper that I was proud of, and that I thought was a good contribution to the literature, and it only took me four days. This is only the beginning of the story for this paper as I am now moving on to conference submissions (for those not aware, the publication process in economics and finance is quite long, with multiple rounds of revisions and resubmissions, so it will be a while until this paper is “done”)."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#concluding-remarks",
+    "href": "posts/vibe-research/index.html#concluding-remarks",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Concluding Remarks",
+    "text": "Concluding Remarks\nI wanted to share my experience and insights from this experiment, as I think it has implications for how we will do research in the future. If I can write a decent paper so quickly, what does that mean for the future of academic research? Will we write (and review) more papers? Will we set a higher bar for what constitutes a “good” paper? I don’t have the answers to these questions, but one thing I’m sure of is that we can’t put the genie back in the bottle.\nOne thing that reassured me is how much the human in the loop still matters, even when AI is doing almost all of the writing and coding. The key decisions that shaped the paper — the initial idea, the simplification attempts, the choice to verify references independently, the judgment calls on which reviewer suggestions to accept and which to ignore — were mostly mine. AI made me faster, not smarter. It lowered the cost of exploring ideas, but the research taste and direction still had to come from me.\nI also want to be honest about the limitations. I don’t fully understand every line of the math in my own paper, and that is uncomfortable. I have verified the key results using sympy and reviewed the derivations, but I would be lying if I said I could reproduce them on a whiteboard from memory. The fabricated reference that slipped through the literature review is another reminder that trust but verify is not optional when working with AI. These are not reasons to stop using AI for research, but they are reasons to be thoughtful and transparent about how we use it."
+  },
+  {
+    "objectID": "posts/vibe-research/index.html#software-stack",
+    "href": "posts/vibe-research/index.html#software-stack",
+    "title": "Vibe Research, or How I Wrote an Academic Paper in Four Days",
+    "section": "Software Stack",
+    "text": "Software Stack\nHere is a list of the main platforms and software tools I used for this project:\n\nThe workhorse was Claude Code. I’m on the Max plan (USD 100/month) but still managed to hit the 5-hour limit a few times. This also lets me use Claude.ai, Claude Cowork and Claude in Chrome, which I used for specific tasks as described above.\nI use GitHub for version control and collaboration in most of my projects. As an academic, I get a free GitHub Copilot Pro subscription, which I used to access Gemini Pro in OpenCode.\nQuarto for writing the paper in markdown and rendering it to PDF. Very convenient when working with AI agents as markdown is as close to a natural language as you can get while still being structured enough for the AI to understand the document structure and make specific edits.\nVS Code with a Devcontainer.\nCodex CLI and ChatGPT. I’m on the Plus plan, which was plenty for the use I made of it.\nPython and uv for the code. I also used sympy for the analytical solutions and numpy for the numerical solutions.\nRefine (using a free review) for an additional round of feedback on the paper."
+  }
+]
