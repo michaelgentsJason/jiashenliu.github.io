@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: PhD Student at <a href='https://warwick.ac.uk/'>University of Warwick</a>
+subtitle: MSc Student at <a href='https://warwick.ac.uk/'>University of Warwick</a>
 
 profile:
   align: right
@@ -18,14 +18,27 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-I am a PhD student in Computer Science at the University of Warwick, supervised by [Prof. Victor Sanchez](https://warwick.ac.uk/fac/sci/dcs/people/victor_sanchez/). My research focuses on **embodied and agentic AI**, **computer vision**, and **long-horizon reasoning**.
+I am an MSc student in Cyber Security Engineering (with Distinction) at the University of Warwick. My research focuses on **embodied and agentic AI**, integrating computer vision, geometric perception, and long-horizon reasoning for complex real-world environments.
 
-Previously, I obtained my MSc in Artificial Intelligence from Imperial College London, where I worked on multimodal learning and vision-language models. I also hold a BEng in Computer Science.
+My research spans multiple exciting areas:
+- **3D Visual-Inertial Perception**: Developing simulation-driven adaptation pipelines for underwater robotics
+- **Video-Language Models**: Investigating geometric representations for visual context understanding
+- **LLM Agents**: Building systems for tool use, self-evolution, and reliable long-horizon execution
+- **Retrieval-Augmented Generation**: Designing RAG-enhanced frameworks for automated security testing and multimodal retrieval
 
-My research interests include:
-- **Embodied AI**: Developing intelligent agents that can perceive and interact with physical environments
-- **Computer Vision**: Visual understanding, object detection, and scene analysis
-- **Agentic Systems**: Building autonomous agents capable of long-horizon planning and reasoning
-- **Multimodal Learning**: Bridging vision and language for comprehensive AI understanding
+## Recent Work
 
-I am passionate about advancing AI systems that can understand and navigate complex real-world scenarios, combining perception, reasoning, and action in a unified framework.
+I am currently working on several research projects including underwater cave 3D reconstruction with simulation-driven adaptation, video-language models for geometric visual understanding, and LLM-powered automated penetration testing systems.
+
+## Education
+
+**University of Warwick**, Coventry, UK (2024.09 - 2025.09)  
+MSc in Cyber Security Engineering (with Distinction)
+
+**Nanjing Agricultural University**, Nanjing, China (2020.09 - 2024.06)  
+Bachelor of Management in Information Management and Information Systems  
+- Average Grade: 84.25/100
+- Graduation Thesis: "DiaKG-GPT: An Intelligent Medical Q&A System via Data Augmentation" (Outstanding Graduation Thesis Award)
+
+**The Chinese University of Hong Kong**, Hong Kong, China (2023.07 - 2023.08)  
+Summer Program in Technology, Science and Environment
