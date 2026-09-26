@@ -1,0 +1,37 @@
+.home-about {
+  .post-header { margin-bottom: 1.8rem; }
+  .post-title { font-size: 2.5rem; letter-spacing: -1.2px; margin-bottom: .5rem; }
+  .home-tagline { color: var(--global-text-color-light); font-size: .95rem; margin: 0; }
+  .home-intro { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 2rem; align-items: start; }
+  .home-copy { line-height: 1.8; }
+  .home-copy p:last-child { margin-bottom: 0; }
+  .home-portrait { width: 170px; height: 170px; object-fit: cover; border-radius: 12px; }
+  .home-links { display: flex; flex-wrap: wrap; gap: .75rem 1.4rem; padding: 1.25rem 0 1.6rem; margin: .6rem 0 1.9rem; border-bottom: 1px solid var(--global-divider-color); }
+  .home-links a { display: inline-flex; align-items: center; gap: .4rem; font-size: .92rem; }
+  .link-note { font-size: .7rem; color: var(--global-text-color-light); }
+  h2 { font-size: 1.75rem; letter-spacing: -.4px; margin-bottom: 1.6rem; }
+}
+.clean-publications {
+  .publication-group { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--global-text-color-light); font-weight: 500; margin: 1.8rem 0 1.1rem; }
+  ol.bibliography { padding: 0; list-style: none; margin: 0; }
+  ol.bibliography > li { margin: 0; padding: 0; }
+  .paper { padding: 0 0 1.25rem; margin: 0 0 1.25rem; border-bottom: 1px solid var(--global-divider-color); }
+  .paper-title { font-size: 1.02rem; font-weight: 500; line-height: 1.55; margin: 0 0 .35rem; }
+  .paper-authors { font-size: .9rem; line-height: 1.7; margin-bottom: .3rem; }
+  .paper-authors strong { font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+  .paper-venue { font-size: .88rem; line-height: 1.6; font-style: italic; margin: 0; }
+  .paper-year, .paper-note { color: var(--global-text-color-light); }
+  .paper-note { font-size: .8rem; margin: .3rem 0 0; }
+  .paper-links { display: flex; gap: 1rem; font-size: .82rem; margin-top: .5rem; }
+}
+.cv-download { display: inline-flex; gap: .5rem; align-items: center; border: 1px solid var(--global-divider-color); padding: .65rem 1rem; border-radius: 6px; }
+.cv-date { font-size: .85rem; color: var(--global-text-color-light); }
+@media (max-width: 575px) {
+  .home-about {
+    .post-title { font-size: 2.15rem; }
+    .home-intro { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+    .home-portrait { grid-row: 1; width: 112px; height: 112px; }
+    .home-links { gap: .75rem 1.15rem; }
+    h2 { font-size: 1.5rem; }
+  }
+}

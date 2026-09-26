@@ -1,0 +1,8 @@
+<div class="publications clean-publications">
+  <h3 class="publication-group">Published / Accepted</h3>
+  {% bibliography --group_by none --query @*[category=published]* %}
+  <h3 class="publication-group">Preprints / Under Review</h3>
+  {% bibliography --group_by none --query @*[category=submitted]* %}
+  <h3 class="publication-group">In Preparation</h3>
+  {% bibliography --group_by none --query @*[category=preparation]* %}
+</div>
