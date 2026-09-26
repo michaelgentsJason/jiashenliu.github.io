@@ -13,7 +13,7 @@ footer_text: >
   Built with <a href="https://github.com/alshedivat/al-folio">al-folio</a>.
 keywords: Jiashen Liu, embodied AI, agentic AI, computer vision, underwater robotics
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: 🤖 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://michaelgentsjason.github.io # the base hostname & protocol for your site
 baseurl: /jiashenliu.github.io # the subpath of your site, e.g. /blog/. Leave blank for root
