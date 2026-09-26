@@ -6,7 +6,6 @@ nav: true
 nav_order: 3
 ---
 
-<p><a class="cv-download" href="{{ '/cv.pdf' | relative_url }}"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i> Download full CV (PDF)</a></p>
 <p class="cv-date">Updated September 2026</p>
 
 ## Education
@@ -24,4 +23,4 @@ Summer Program
 
 Embodied and agentic AI, geometric perception, video and vision-language models, and reliable long-horizon execution.
 
-See [publications and manuscripts]({{ '/publications/' | relative_url }}). The full CV includes research experience, projects, awards, and skills.
+See [publications and manuscripts]({{ '/publications/' | relative_url }}).
