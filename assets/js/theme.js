@@ -4,7 +4,6 @@ document.documentElement.dataset.theme = savedTheme ||
 
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.querySelector('.theme-toggle');
-    const icon = button.querySelector('i');
 
     function updateButton() {
         const dark = document.documentElement.dataset.theme === 'dark';
@@ -12,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         button.setAttribute('aria-label', label);
         button.setAttribute('title', label);
         button.setAttribute('aria-pressed', String(dark));
-        icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
     }
 
     button.addEventListener('click', () => {

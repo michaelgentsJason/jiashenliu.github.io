@@ -11,7 +11,12 @@
     --background-secondary: #faf9f6;
     --background-accent: #f3f1eb;
     --border-color: #bcc0cc;
-    --transition: all 0.15s ease;
+    --theme-duration: 450ms;
+    --icon-duration: 500ms;
+    --theme-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: color var(--theme-duration) var(--theme-easing),
+        background-color var(--theme-duration) var(--theme-easing),
+        border-color var(--theme-duration) var(--theme-easing);
     --glow: 0 0 10px rgba(30, 41, 59, 0.15);
     --link-color: #5b9fba;
     --link-hover: #377c99;
@@ -89,6 +94,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .theme-toggle {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -100,6 +106,35 @@ h1, h2, h3, h4, h5, h6,
     background: transparent;
     color: var(--primary-color);
     cursor: pointer;
+}
+
+.theme-icon {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    transition: opacity var(--icon-duration) var(--theme-easing),
+        transform var(--icon-duration) var(--theme-easing);
+}
+
+.theme-icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.theme-icon-sun {
+    opacity: 0;
+    transform: rotate(60deg) scale(0.6);
+}
+
+[data-theme="dark"] .theme-icon-moon {
+    opacity: 0;
+    transform: rotate(-60deg) scale(0.6);
+}
+
+[data-theme="dark"] .theme-icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
 }
 
 .theme-toggle:hover {
@@ -532,4 +567,20 @@ hr {
 ::selection {
     background: rgba(30, 41, 59, 0.2);
     color: #fff;
+}
+
+body, .navbar, .footer, .card, .rounded-xl, .img-thumbnail,
+.news-date, .theme-toggle, .navbar-toggler,
+.border-bottom, .border-top, .border-gray, hr,
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,
+.text-profile-bio, .text-profile-position, .text-muted,
+.education-period, .education-note {
+    transition: var(--transition);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --theme-duration: 0ms;
+        --icon-duration: 0ms;
+    }
 }
