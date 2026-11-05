@@ -1,19 +1,15 @@
-# Jiashen Liu's Homepage
+# Jiashen Liu?s academic homepage
 
-Source code for Jiashen Liu's personal academic website, built with [Jekyll](https://jekyllrb.com/) and the [al-folio](https://github.com/alshedivat/al-folio) theme.
+A Jekyll website based on [academic-homepage](https://github.com/luost26/academic-homepage).
 
 ## Editing
 
-- `_config.yml`: site settings and social links.
-- `_pages/about.md`: homepage and biography.
-- `_bibliography/papers.bib`: publications.
-- `_news/`: news and announcements.
-- `assets/`: images and other website assets.
+- `index.html`: homepage content and experience.
+- `_data/profile.yml`: profile details.
+- `assets/css/site.css`: site styling.
+- `CV_Jiashen Liu.pdf`: current CV.
+- `_publications/`: add one Markdown file per publication with `title`, `date`, `authors`, `venue`, and optional `link` in its front matter. Publications appear automatically on the homepage.
 
-## Documentation
+Run locally with `bundle install` followed by `bundle exec jekyll serve`. GitHub Pages can build the site from the repository?s publishing branch.
 
-See [INSTALL.md](INSTALL.md) for setup instructions and [CUSTOMIZE.md](CUSTOMIZE.md) for theme customization.
-
-## Credits
-
-Based on [al-folio](https://github.com/alshedivat/al-folio), distributed under the [MIT License](LICENSE).
+Template distributed under the MIT License; see `LICENSE`.
