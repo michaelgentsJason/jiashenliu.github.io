@@ -2,5 +2,9 @@
 layout: default
 title: Publications
 nav: publications
+permalink: /publications
 ---
-<section class="panel"><h2>Publications</h2>{% assign publications = site.publications | sort: 'date' | reverse %}{% for pub in publications %}<article class="publication"><div><h3>{{ pub.title }}</h3><p>{{ pub.authors }}</p>{% if pub.venue %}<p>{{ pub.venue }}{% if pub.date %}, {{ pub.date | date: '%Y' }}{% endif %}</p>{% endif %}{% if pub.link %}<a href="{{ pub.link }}">[Paper]</a>{% endif %}</div></article>{% endfor %}</section>
+<section class="my-3 p-0 rounded-xl" aria-labelledby="publications-title">
+    <h1 id="publications-title" class="h6 border-bottom border-gray px-4 pt-4 pb-3 mb-0">Publications</h1>
+    {% include publications.html %}
+</section>

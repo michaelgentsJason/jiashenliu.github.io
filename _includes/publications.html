@@ -1,0 +1,9 @@
+{% assign publications = site.publications | sort: 'date' | reverse %}
+{% for pub in publications %}
+<article class="p-4{% unless forloop.last %} border-bottom border-gray{% endunless %}">
+    <h3 class="h6 mt-0 mb-1 font-weight-bold">{{ pub.title }}</h3>
+    <p class="mt-0 mb-0 small">{{ pub.authors }}</p>
+    <p class="mt-0 mb-0 small">{{ pub.venue }} {{ pub.date | date: '%Y' }}</p>
+    {% if pub.link %}<p class="small pb-0 mb-0"><a href="{{ pub.link }}">[Paper]</a></p>{% endif %}
+</article>
+{% endfor %}

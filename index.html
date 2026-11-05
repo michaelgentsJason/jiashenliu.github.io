@@ -3,16 +3,41 @@ layout: default
 title: Homepage
 nav: home
 ---
-<section class="panel profile">
-  <img class="portrait" src="{{ '/assets/images/portrait.jpg' | relative_url }}" alt="Jiashen Liu">
-  <h1>Jiashen Liu</h1>
-  <div class="bio">
-    <p>Hi, I'm Jiashen, a Research Assistant at <a href="https://www.hkust-gz.edu.cn/">PAIRS Lab, The Hong Kong University of Science and Technology (Guangzhou)</a>. Previously, I was a Research Intern at Harbin Institute of Technology, Shenzhen. I received my MSc in Cyber Security Engineering with Distinction from the <a href="https://warwick.ac.uk/">University of Warwick</a>, and my bachelor's degree from <a href="https://www.njau.edu.cn/">Nanjing Agricultural University</a>.</p>
-    <p>My research focuses on <strong>embodied intelligence</strong> and <strong>real-to-sim-to-real systems</strong>, particularly reconstructing and adapting realistic simulation environments for embodied agents. I am also interested in 3D computer vision, geometric perception, simulation-driven learning for robotics, and multimodal and LLM-based agents.</p>
-  </div>
-  <div class="profile-links"><a href="mailto:Jiashen.Liu@warwick.ac.uk">@ Jiashen.Liu[at]warwick.ac.uk</a><a href="https://scholar.google.com/citations?user=e2_zSJQAAAAJ">Google Scholar</a><a href="https://github.com/michaelgentsJason">GitHub</a><a href="{{ '/CV_Jiashen Liu.pdf' | relative_url }}">CV</a></div>
+<div class="row"><div class="col">
+    <section class="card border-0 bg-white"><div class="card-body p-4">
+        <div class="row"><div class="col">
+            <div class="figure float-right ml-4 mb-4 d-none d-md-block"><img src="{{ '/assets/images/portrait.jpg' | relative_url }}" class="figure-img img-fluid img-thumbnail" style="height: 150px;" alt="Jiashen Liu"></div>
+            <div class="d-flex">
+                <h1 class="h1 profile-name">Jiashen Liu</h1>
+                <div class="ml-auto d-md-none"><a href="{{ '/assets/images/portrait.jpg' | relative_url }}"><img src="{{ '/assets/images/portrait.jpg' | relative_url }}" class="rounded-circle" style="height: 48px;" alt="Jiashen Liu"></a></div>
+            </div>
+            <div class="text-profile-bio mt-3">
+                <p>Hi, I'm Jiashen, a Research Assistant at PAIRS Lab, <a href="https://www.hkust-gz.edu.cn/">The Hong Kong University of Science and Technology (Guangzhou)</a>. Previously, I was a Research Intern at Harbin Institute of Technology, Shenzhen. I received my MSc in Cyber Security Engineering with Distinction from the <a href="https://warwick.ac.uk/">University of Warwick</a> and my bachelor's degree in Information Management and Information Systems from <a href="https://www.njau.edu.cn/">Nanjing Agricultural University</a>. My research focuses on <strong>embodied intelligence</strong> and <strong>real-to-sim-to-real systems</strong>, with interests in 3D computer vision, geometric perception, simulation-driven learning for robotics, and multimodal and LLM-based agents.</p>
+            </div>
+        </div></div>
+        <hr>
+        <div class="row"><div class="col">
+            <a class="pr-3 no-break" href="mailto:Jiashen.Liu@warwick.ac.uk"><i class="fas fa-at" aria-hidden="true"></i> <span class="email-text">Jiashen.Liu[at]warwick[dot]ac[dot]uk</span></a>
+            <a class="pr-3 no-break" href="https://scholar.google.com/citations?user=e2_zSJQAAAAJ"><i class="fab fa-google-scholar" aria-hidden="true"></i> Google Scholar</a>
+            <a class="pr-3 no-break" href="https://github.com/michaelgentsJason"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+            <a class="pr-3 no-break" href="{{ '/CV_Jiashen Liu.pdf' | relative_url }}"><i class="fas fa-file-pdf" aria-hidden="true"></i> CV</a>
+        </div></div>
+    </div></section>
+</div></div>
+
+<section class="my-3 rounded-xl" aria-labelledby="news-title">
+    <h2 id="news-title" class="h6 px-4 pt-4 pb-3 mb-0 border-bottom border-gray">News</h2>
+    <div class="px-4 pb-1"><div class="media py-1">
+        <div class="mr-3 text-muted my-1">2026</div>
+        <div class="media-body">
+            <div class="my-1 d-flex"><div>I joined <strong>PAIRS Lab at HKUST (Guangzhou)</strong> as a Research Assistant!</div><time class="ml-auto mt-auto pl-3 text-muted no-break" datetime="2026-10">Oct</time></div>
+            <div class="my-1 d-flex"><div>I joined <strong>Harbin Institute of Technology, Shenzhen</strong> as a Research Intern.</div><time class="ml-auto mt-auto pl-3 text-muted no-break" datetime="2026-07">Jul</time></div>
+            <div class="my-1 d-flex"><div>Our project <strong>GeoMind &middot; OreSense</strong> received the <strong>Global Excellence Award</strong> at the Entrepreneur Dreamer Competition!</div><time class="ml-auto mt-auto pl-3 text-muted no-break" datetime="2026-04">Apr</time></div>
+        </div>
+    </div></div>
 </section>
-<section class="panel" id="news"><h2>News</h2><div class="section-body news-list"><div class="news-row"><span class="year">2026</span><div>Joined PAIRS Lab at HKUST (Guangzhou) as a Research Assistant.</div><time>Oct</time></div><div class="news-row"><span class="year"></span><div>Joined Harbin Institute of Technology, Shenzhen as a Research Intern.</div><time>Jul</time></div><div class="news-row"><span class="year"></span><div>Received the Global Excellence Award at the Entrepreneur Dreamer Competition for GeoMind &middot; OreSense.</div><time>Apr</time></div></div></section>
-<section class="panel" id="publications"><h2>Publications</h2>{% assign publications = site.publications | sort: 'date' | reverse %}{% for pub in publications %}<article class="publication"><div><h3>{{ pub.title }}</h3><p>{{ pub.authors }}</p>{% if pub.venue %}<p>{{ pub.venue }}{% if pub.date %}, {{ pub.date | date: '%Y' }}{% endif %}</p>{% endif %}{% if pub.link %}<a href="{{ pub.link }}">[Paper]</a>{% endif %}</div></article>{% endfor %}</section>
-<section class="panel"><h2>Experience</h2><div class="section-body entries"><div class="entry"><div><strong>PAIRS Lab, HKUST (Guangzhou)</strong><span>Research Assistant | Embodied Intelligence and Real-to-Sim-to-Real</span></div><time>Oct 2026 - Present</time></div><div class="entry"><div><strong>Harbin Institute of Technology, Shenzhen</strong><span>Research Intern | Underwater 3D Reconstruction and Simulation</span></div><time>Jul 2026 - Sep 2026</time></div><div class="entry"><div><strong>University of Warwick</strong><span>Research Assistant | Geological Machine Learning</span></div><time>Oct 2024 - Jan 2025</time></div></div></section>
-<section class="panel"><h2>Education</h2><div class="section-body entries"><div class="entry"><div><strong>University of Warwick</strong><span>MSc in Cyber Security Engineering, with Distinction</span></div><time>2024 - 2025</time></div><div class="entry"><div><strong>Nanjing Agricultural University</strong><span>Bachelor of Management in Information Management and Information Systems</span></div><time>2020 - 2024</time></div><div class="entry"><div><strong>The Chinese University of Hong Kong</strong><span>Summer Program in Technology, Science and Environment</span></div><time>2023</time></div></div></section>
+
+<section class="my-3 p-0 rounded-xl" aria-labelledby="publications-title">
+    <h2 id="publications-title" class="h6 border-bottom border-gray px-4 pt-4 pb-3 mb-0">Publications</h2>
+    {% include publications.html %}
+</section>

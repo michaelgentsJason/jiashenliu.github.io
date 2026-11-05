@@ -1,18 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Jiashen Liu's academic homepage: embodied intelligence, 3D perception, and real-to-sim-to-real systems.">
-  <title>{{ page.title }} - Jiashen Liu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Jiashen Liu's academic homepage. Embodied intelligence, 3D perception, and real-to-sim-to-real systems.">
+    <title>{{ page.title }} - Jiashen Liu</title>
+    <link rel="icon" type="image/jpeg" href="{{ '/assets/images/portrait.jpg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/fontawesome.min.css' | relative_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
 </head>
 <body>
-  <header class="navbar"><div class="container nav-inner"><a class="brand" href="{{ '/' | relative_url }}">Jiashen Liu</a><nav aria-label="Main navigation"><a href="{{ '/' | relative_url }}"{% if page.nav == 'home' %} aria-current="page"{% endif %}>Home</a><a href="{{ '/publications.html' | relative_url }}"{% if page.nav == 'publications' %} aria-current="page"{% endif %}>Publications</a></nav></div></header>
-  <main class="container">{{ content }}</main>
-  <footer class="container footer">&copy; {{ 'now' | date: '%Y' }} Jiashen Liu <span>Powered by <a href="https://github.com/luost26/academic-homepage">academic-homepage</a></span></footer>
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5" aria-label="Main navigation">
+        <div class="container-lg">
+            <a class="navbar-brand" href="{{ '/' | relative_url }}">Jiashen Liu</a>
+            <button class="navbar-toggler" type="button" style="font-size: 1em; padding: 0.5em;" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-map" aria-hidden="true"></i> Menu</button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item{% if page.nav == 'home' %} active{% endif %}"><a class="nav-link" href="{{ '/' | relative_url }}"{% if page.nav == 'home' %} aria-current="page"{% endif %}>Home</a></li>
+                    <li class="nav-item{% if page.nav == 'publications' %} active{% endif %}"><a class="nav-link" href="{{ '/publications' | relative_url }}"{% if page.nav == 'publications' %} aria-current="page"{% endif %}>Publications</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="container-lg">{{ content }}</main>
+    <footer class="footer"><div class="container-lg"><div class="row my-3">
+        <div class="col-6"><div class="text-muted">Last updated: Nov 2026</div></div>
+        <div class="col-6"><div class="text-right text-muted">Design and source code from <a href="https://github.com/luost26/academic-homepage"><i class="fas fa-pencil-ruler" aria-hidden="true"></i> academic-homepage</a></div></div>
+    </div></div></footer>
+    <script>
+        const menuButton = document.querySelector('.navbar-toggler');
+        menuButton.addEventListener('click', () => {
+            const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+            menuButton.setAttribute('aria-expanded', String(!expanded));
+            document.getElementById('navbarResponsive').classList.toggle('show', !expanded);
+        });
+    </script>
 </body>
 </html>
