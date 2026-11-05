@@ -1,0 +1,6 @@
+---
+layout: default
+title: Publications
+nav: publications
+---
+<section class="panel"><h2>Publications</h2>{% assign publications = site.publications | sort: 'date' | reverse %}{% for pub in publications %}<article class="publication"><div><h3>{{ pub.title }}</h3><p>{{ pub.authors }}</p>{% if pub.venue %}<p>{{ pub.venue }}{% if pub.date %}, {{ pub.date | date: '%Y' }}{% endif %}</p>{% endif %}{% if pub.link %}<a href="{{ pub.link }}">[Paper]</a>{% endif %}</div></article>{% endfor %}</section>
