@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-/* Original terminal theme with a clean egg-white background. */
 :root {
+    color-scheme: light;
     --primary-color: #1e293b;
     --primary-hover: #0f172a;
     --text-primary: #4c4f69;
@@ -15,6 +15,23 @@
     --glow: 0 0 10px rgba(30, 41, 59, 0.15);
     --link-color: #5b9fba;
     --link-hover: #377c99;
+    --date-background: #eef3f8;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --primary-color: #e4e8f1;
+    --primary-hover: #ffffff;
+    --text-primary: #c8ceda;
+    --text-secondary: #a9b4c6;
+    --text-light: #8795ab;
+    --background-primary: #161a22;
+    --background-secondary: #1b202a;
+    --background-accent: #252c38;
+    --border-color: #3b4556;
+    --link-color: #7fbed7;
+    --link-hover: #b5e0ef;
+    --date-background: #263543;
 }
 
 body {
@@ -64,6 +81,39 @@ h1, h2, h3, h4, h5, h6,
 .nav-item.active .nav-link {
     color: var(--primary-color) !important;
     font-weight: 600;
+}
+
+.navbar-tools {
+    gap: 10px;
+    margin-left: 16px;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    background: var(--background-accent);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 3px;
+}
+
+.navbar-light .navbar-toggler {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
 }
 
 /* Override Bootstrap bg-light */
@@ -162,7 +212,7 @@ h1, h2, h3, h4, h5, h6,
     flex: 0 0 98px;
     padding: 2px 10px;
     border-radius: 20px;
-    background: #eef3f8;
+    background: var(--date-background);
     color: var(--link-color);
     font-size: 0.75rem;
     font-weight: 700;

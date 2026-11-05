@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Jiashen Liu's academic homepage. Embodied intelligence, 3D perception, and real-to-sim-to-real systems.">
     <title>{{ page.title }} - Jiashen Liu</title>
+    <script src="{{ '/assets/js/theme.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
     <link rel="icon" type="image/jpeg" href="{{ '/assets/images/portrait.jpg' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/fontawesome.min.css' | relative_url }}">
@@ -17,8 +18,11 @@
     <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5" aria-label="Main navigation">
         <div class="container-lg">
             <a class="navbar-brand" href="{{ '/' | relative_url }}">Jiashen Liu</a>
-            <button class="navbar-toggler" type="button" style="font-size: 1em; padding: 0.5em;" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-map" aria-hidden="true"></i> Menu</button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="navbar-tools d-flex align-items-center order-1 order-sm-2">
+                <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i></button>
+                <button class="navbar-toggler" type="button" style="font-size: 1em; padding: 0.5em;" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-map" aria-hidden="true"></i> Menu</button>
+            </div>
+            <div class="collapse navbar-collapse order-2 order-sm-1" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item{% if page.nav == 'home' %} active{% endif %}"><a class="nav-link" href="{{ '/' | relative_url }}"{% if page.nav == 'home' %} aria-current="page"{% endif %}>Home</a></li>
                     <li class="nav-item{% if page.nav == 'publications' %} active{% endif %}"><a class="nav-link" href="{{ '/publications' | relative_url }}"{% if page.nav == 'publications' %} aria-current="page"{% endif %}>Publications</a></li>
