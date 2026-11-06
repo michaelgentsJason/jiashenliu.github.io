@@ -1,9 +1,17 @@
-{% assign publications = site.publications | sort: 'date' | reverse %}
+{% assign publications = site.publications | sort: 'order' %}
 {% for pub in publications %}
-<article class="p-4{% unless forloop.last %} border-bottom border-gray{% endunless %}">
-    <h3 class="h6 mt-0 mb-1 font-weight-bold">{{ pub.title }}</h3>
-    <p class="mt-0 mb-0 small">{{ pub.authors }}</p>
-    <p class="mt-0 mb-0 small">{{ pub.venue }} {{ pub.date | date: '%Y' }}</p>
-    {% if pub.link %}<p class="small pb-0 mb-0"><a href="{{ pub.link }}">[Paper]</a></p>{% endif %}
+{% assign equal_authors = pub.authors | where: 'equal', true %}
+{% assign corresponding_authors = pub.authors | where: 'corresponding', true %}
+<article class="publication-entry p-4{% unless forloop.last %} border-bottom border-gray{% endunless %}">
+    <a class="publication-preview" href="{{ pub.image | relative_url }}" aria-label="View figure for {{ pub.title | escape }}">
+        <img src="{{ pub.image | relative_url }}" alt="{{ pub.image_alt | escape }}" loading="lazy">
+    </a>
+    <div class="publication-info">
+        <h3 class="h6 mt-0 mb-2 font-weight-bold">{{ pub.title }}</h3>
+        <p class="publication-authors small mb-1">{% for author in pub.authors %}{% if author.name == site.data.profile.primary_name %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if author.equal %}<sup class="author-mark">&dagger;</sup>{% endif %}{% if author.corresponding %}<sup class="author-mark">*</sup>{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</p>
+        <p class="small mb-1">{{ pub.venue }} {{ pub.year }} <span class="publication-status">{{ pub.status }}</span></p>
+        {% if equal_authors.size > 0 or corresponding_authors.size > 0 %}<p class="publication-note small mb-1">{% if equal_authors.size > 0 %}<sup>&dagger;</sup> Equal contribution{% endif %}{% if equal_authors.size > 0 and corresponding_authors.size > 0 %} &middot; {% endif %}{% if corresponding_authors.size > 0 %}<sup>*</sup> Corresponding author{% endif %}</p>{% endif %}
+        <p class="publication-links small mb-0">{% assign paper_prefix = pub.paper_url | slice: 0, 1 %}{% if paper_prefix == '/' %}<a href="{{ pub.paper_url | relative_url }}">[Paper]</a>{% else %}<a href="{{ pub.paper_url }}">[Paper]</a>{% endif %}{% if pub.arxiv_url %} <a href="{{ pub.arxiv_url }}">[arXiv]</a>{% endif %}</p>
+    </div>
 </article>
 {% endfor %}

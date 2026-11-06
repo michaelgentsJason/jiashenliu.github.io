@@ -504,6 +504,67 @@ hr {
 }
 
 /* Publication items */
+.publication-entry {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 24px;
+    align-items: center;
+}
+
+.publication-preview {
+    display: block;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+}
+
+.publication-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.publication-info h3 {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.publication-authors {
+    line-height: 1.65;
+}
+
+.publication-status {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 1px 6px;
+    border: 1px solid var(--border-color);
+    background: var(--date-background);
+    color: var(--link-color);
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.publication-note {
+    color: var(--text-secondary);
+}
+
+.publication-links a + a {
+    margin-left: 8px;
+}
+
+@media (max-width: 767.98px) {
+    .publication-entry {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .publication-preview {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
 .publication-item:hover {
     background-color: rgba(30, 41, 59, 0.04);
 }
@@ -575,6 +636,10 @@ body, .navbar, .footer, .card, .rounded-xl, .img-thumbnail,
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,
 .text-profile-bio, .text-profile-position, .text-muted,
 .education-period, .education-note {
+    transition: var(--transition);
+}
+
+.publication-preview, .publication-status, .publication-note {
     transition: var(--transition);
 }
 
