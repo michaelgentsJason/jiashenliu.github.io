@@ -1,6 +1,6 @@
 ﻿title: Jiashen Liu
 url: "https://michaelgentsjason.github.io"
-baseurl: "/jiashenliu.github.io"
+baseurl: ""
 markdown: kramdown
 collections:
   publications:

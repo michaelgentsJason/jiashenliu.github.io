@@ -2,6 +2,8 @@
 
 A Jekyll website based on [academic-homepage](https://github.com/luost26/academic-homepage).
 
+Live site: [michaelgentsjason.github.io](https://michaelgentsjason.github.io/).
+
 ## Editing
 
 - `index.html`: homepage content and experience.
