@@ -1,5 +1,13 @@
 @charset "utf-8";
 
+@font-face {
+    font-family: "Noto Serif SC";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../fonts/noto-serif-sc-name.ttf") format("truetype");
+}
+
 :root {
     color-scheme: light;
     --primary-color: #1e293b;
@@ -313,6 +321,16 @@ h1, h2, h3, h4, h5, h6,
 .profile-name {
     font-family: "JetBrains Mono", "Courier New", Courier, monospace;
     font-weight: 700;
+}
+
+.chinese-name {
+    display: inline-block;
+    margin-left: 0.2em;
+    font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
 }
 
 .inline-badge {
