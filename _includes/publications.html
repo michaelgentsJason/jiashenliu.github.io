@@ -3,9 +3,9 @@
 {% assign equal_authors = pub.authors | where: 'equal', true %}
 {% assign corresponding_authors = pub.authors | where: 'corresponding', true %}
 <article class="publication-entry p-4{% unless forloop.last %} border-bottom border-gray{% endunless %}">
-    <a class="publication-preview" href="{{ pub.image | relative_url }}" aria-label="View figure for {{ pub.title | escape }}">
+    <div class="publication-preview">
         <img src="{{ pub.image | relative_url }}" alt="{{ pub.image_alt | escape }}" loading="lazy">
-    </a>
+    </div>
     <div class="publication-info">
         <h3 class="h6 mt-0 mb-2 font-weight-bold">{{ pub.title }}</h3>
         <p class="publication-authors small mb-1">{% for author in pub.authors %}{% if author.name == site.data.profile.primary_name %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if author.equal %}<sup class="author-mark">&dagger;</sup>{% endif %}{% if author.corresponding %}<sup class="author-mark">*</sup>{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</p>
